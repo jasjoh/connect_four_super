@@ -1,0 +1,6 @@
+.GamePiece {
+  margin: 5px;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+}

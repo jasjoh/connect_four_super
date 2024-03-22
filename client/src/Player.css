@@ -1,0 +1,30 @@
+.Player-colorDiv, .Player-removeButton, .Player-name {
+  display: inline-block;
+  align-items: center;
+}
+
+.Player-colorDiv {
+  background-color: lightgray;
+  height: 1em;
+  width: 20px;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.Player-colorCircle {
+  height: .6em;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+  vertical-align: middle;
+  margin: 2px;
+}
+
+.Player-removeButton {
+  margin-left: 5px;
+}
+
+.Player-name {
+  margin-right: 5px;
+}

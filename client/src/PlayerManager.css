@@ -1,0 +1,14 @@
+.PlayerManager {
+  border-radius: 5px;
+  background-color: bisque;
+  padding: 5px;
+  max-width: 300px;
+}
+
+.PlayerListTitle, .AddPlayerFormTitle {
+  font-weight: bold;
+}
+
+.AddPlayerFormTitle {
+  margin-top: 10px;
+}
