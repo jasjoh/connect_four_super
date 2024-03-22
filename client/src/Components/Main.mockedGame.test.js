@@ -3,7 +3,7 @@ import { render, act, waitFor } from '@testing-library/react';
 import Main from './Main';
 import GameComponent from './GameComponent';
 import PlayerManager from './PlayerManager';
-import { Game, AiPlayer, Player } from './models';
+import { Game, AiPlayer, Player } from '../models';
 
 /**
  * This file tests the logic inside the Main component that is not dependent
@@ -13,7 +13,7 @@ import { Game, AiPlayer, Player } from './models';
 
 jest.mock('./GameComponent');
 jest.mock('./PlayerManager');
-jest.mock('./models');
+jest.mock('../models');
 
 test('Main component renders without crashing', () => {
   // default game has player count of 0 and gameState of 0

@@ -1,6 +1,6 @@
 import GameComponent from "./GameComponent";
 import PlayerManager from "./PlayerManager";
-import { Player, AiPlayer, Game } from "./models";
+import { Player, AiPlayer, Game } from "../models";
 import { useEffect, useState } from "react";
 
 /** Parent level page for both the alert, player manager and game area

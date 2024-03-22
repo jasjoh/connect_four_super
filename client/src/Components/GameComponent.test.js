@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import GameComponent from './GameComponent'
 import GameBoard from './GameBoard';
-import { createMockGame, createBoardState } from './testHelpers';
+import { createMockGame, createBoardState } from '../testHelpers';
 
 /** Displays the game area with the start / restart button and game board
  *
