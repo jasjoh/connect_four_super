@@ -50,7 +50,8 @@ export class Turn {
         id as "turnId",
         game_id as "gameId",
         player_id as "playerId",
-        location
+        location,
+        (created_on_epoch * 1000) + created_on_milliseconds as "createdOnMs"
       FROM game_turns
       WHERE ${whereConditions}
       ORDER BY id

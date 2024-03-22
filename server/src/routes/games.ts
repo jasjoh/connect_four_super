@@ -6,6 +6,7 @@ import express, { Express, Request, Response, NextFunction, Router } from "expre
 import { ExpressError, NotFoundError, BadRequestError } from "../expressError";
 
 import { Game } from "../models/game";
+import { Turn } from "../models/turns";
 
 interface DropPieceRequestBody {
   playerId: string;
@@ -14,7 +15,7 @@ interface DropPieceRequestBody {
 const router: Router = express.Router();
 
 /** Retrieves a list of all games
- * Returns array of game objects like { id, ai, color, name, created_on }
+ * Returns array of game objects like { id, ai, color, name, createdOn }
  */
 router.get("/", async function (req: Request, res: Response) {
   const games = await Game.getAll();
@@ -22,21 +23,27 @@ router.get("/", async function (req: Request, res: Response) {
 });
 
 /** Retrieves the list of players in a game
- * Returns an array player objects like { id, ai, color, name, created_on }
+ * Returns an array of player objects like { id, ai, color, name, createdOn }
  */
 router.get("/:id/players", async function (req: Request, res: Response) {
   const players = await Game.getPlayers(req.params.id);
   return res.json({ players });
 });
 
-/** Adds a player to a game.
- * Game is specified via 'id' URL param. Player is specified via body like { id }
- * Returns updated count of players
+/** Retrieves the list of all turns associated with a game
+ * Returns an array of turn objects like { id, gameId, playerId, location, createdOnEpoch }
  */
-router.post("/:id/players", async function (req: Request, res: Response) {
-  // console.log("add players called with playerId, gameId:", req.body.id, req.params.id);
-  const result = await Game.addPlayers(req.params.id, req.body);
-  return res.status(201).json({ playerCount: result });
+router.get("/:id/turns", async function (req: Request, res: Response) {
+  const turns = await Game.getTurns(req.params.id);
+  return res.json({ turns });
+});
+
+/** Retrieves a specific game based on id
+ * Returns a game object like { id, ai, color, name, createdOn }
+ */
+router.get("/:id", async function (req: Request, res: Response) {
+  const game = await Game.get(req.params.id);
+  return res.json({ game });
 });
 
 /** Removes a player from a game
@@ -45,6 +52,14 @@ router.post("/:id/players", async function (req: Request, res: Response) {
 router.delete("/:gameid/players/:playerid", async function (req: Request, res: Response) {
   const result = await Game.removePlayer(req.params.gameid, req.params.playerid);
   return res.json({ removed: req.params.playerid });
+});
+
+/** Deletes a game
+ * Returns the delete game's id
+ */
+router.delete("/:id", async function (req: Request, res: Response) {
+  await Game.delete(req.params.id);
+  return res.json({ deleted: req.params.id });
 });
 
 /** Attempts to place a piece in the specific column in the specified game
@@ -61,12 +76,23 @@ router.post("/:gameid/cols/:colid", async function (
   return res.sendStatus(200);
 });
 
-/** Retrieves a specific game based on id
- * Returns a game object like { id, ai, color, name, created_on }
+/** Starts the specified game (based on 'id' in URL param)
+ * Returns 200 OK with no body if successful
  */
-router.get("/:id", async function (req: Request, res: Response) {
-  const game = await Game.get(req.params.id);
-  return res.json({ game });
+router.post("/:id/start", async function (req: Request, res: Response) {
+  // console.log("Start game called with gameId:", req.params.id);
+  await Game.start(req.params.id);
+  return res.sendStatus(200);
+});
+
+/** Adds a player to a game.
+ * Game is specified via 'id' URL param. Player is specified via body like { id }
+ * Returns updated count of players
+ */
+router.post("/:id/players", async function (req: Request, res: Response) {
+  // console.log("add players called with playerId, gameId:", req.body.id, req.params.id);
+  const result = await Game.addPlayers(req.params.id, req.body);
+  return res.status(201).json({ playerCount: result });
 });
 
 /** Creates a new game based on req object { name, color, ai }
@@ -75,23 +101,6 @@ router.get("/:id", async function (req: Request, res: Response) {
 router.post("/", async function (req: Request, res: Response) {
   const game = await Game.create(req.body);
   return res.status(201).json({ game });
-});
-
-/** Deletes a game
- * Returns the delete game's id
- */
-router.delete("/:id", async function (req: Request, res: Response) {
-  await Game.delete(req.params.id);
-  return res.json({ deleted: req.params.id });
-});
-
-/** Starts the specified game (based on 'id' in URL param)
- * Returns 200 OK with no body if successful
- */
-router.post("/:id/start", async function (req: Request, res: Response) {
-  // console.log("Start game called with gameId:", req.params.id);
-  await Game.start(req.params.id);
-  return res.sendStatus(200);
 });
 
 export { router as gamesRouter };
