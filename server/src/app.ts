@@ -1,12 +1,14 @@
 /** Simple demo Express app. */
 import express, { Express, Request, Response, NextFunction } from "express";
 import { ExpressError, NotFoundError, BadRequestError } from "./expressError";
+import cors from "cors";
 
 import { gamesRouter } from "./routes/games";
 import { playersRouter } from "./routes/players";
 
 const app: Express = express();
 app.use(express.json());
+app.use(cors({origin: 'http://localhost:3000'}));
 
 /** ROUTES BELOW */
 

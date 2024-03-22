@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://localhost:3001";
 
-class ConnectFourApi {
+class ConnectFourServerApi {
 
   /**
    * General wrapper for making requests to the server
@@ -27,7 +27,7 @@ class ConnectFourApi {
       const axiosConfig = { url, method, data, params };
       const axiosResponse = await axios(axiosConfig);
       const responseData = axiosResponse.data;
-      return data;
+      return responseData;
     } catch (err) {
       console.error("API Error:", err.response);
       let message = err.response.data.error.message;
@@ -39,10 +39,10 @@ class ConnectFourApi {
 
   /** Get a list of all listings*/
   static async getAllGames() {
-    const data = await ConnectFourApi.request(`games`);
+    const data = await ConnectFourServerApi.request(`games`);
     console.log("retrieved games:", data);
     return data.games;
   }
 
 }
-export default ShareBnbApi;
+export default ConnectFourServerApi;

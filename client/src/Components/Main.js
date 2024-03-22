@@ -2,6 +2,7 @@ import GameComponent from "./GameComponent";
 import PlayerManager from "./PlayerManager";
 import { Player, AiPlayer, Game } from "../models";
 import { useEffect, useState } from "react";
+import GameList from "./GameList";
 
 /** Parent level page for both the alert, player manager and game area
  *
@@ -99,6 +100,7 @@ function Main() {
         game={game}
         dropPiece={dropPiece}
         startGame={startGame} />
+      <GameList />
     </div>
   );
 }
