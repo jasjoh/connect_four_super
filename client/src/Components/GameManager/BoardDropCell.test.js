@@ -9,7 +9,9 @@ import BoardDropCell from './BoardDropCell'
 
 test('renders BoardDropCell component without crashing (no props)', () => {
   const { container } = render(
+    <table><tbody><tr>
     <BoardDropCell />
+    </tr></tbody></table>
   );
 
   const boardPlayCellTd = container.querySelector("td");
@@ -23,7 +25,9 @@ test('calls dropPiece() with passed in colIndex on click', () => {
   }
 
   const { container } = render(
+    <table><tbody><tr>
     <BoardDropCell colIndex={3} dropPiece={(dropPiece)}/>
+    </tr></tbody></table>
   );
 
   const boardPlayCellTd = container.querySelector("td");

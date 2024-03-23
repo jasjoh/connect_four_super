@@ -16,7 +16,9 @@ function dropPiece() {};
 
 test('BoardDropRow renders without crashing when passed valid props', () => {
   const { container } = render(
+    <table><tbody>
     <BoardDropRow width={3} dropPiece={dropPiece} />
+    </tbody></table>
   );
 
   const boardDropRowTr = container.querySelector("tr");
@@ -24,7 +26,11 @@ test('BoardDropRow renders without crashing when passed valid props', () => {
 });
 
 test('BoardDropRow passes correct params to correct # child components', () => {
-  render(<BoardDropRow width={3} dropPiece={dropPiece} />);
+  render(
+    <table><tbody>
+    <BoardDropRow width={3} dropPiece={dropPiece} />
+    </tbody></table>
+  );
 
   expect(BoardDropCell).toHaveBeenCalledTimes(3);
 

@@ -3,6 +3,9 @@ import { render } from '@testing-library/react';
 import BoardPlayRow from './BoardPlayRow'
 import BoardPlayCell from './BoardPlayCell';
 
+jest.mock('./BoardPlayCell');
+console.warn = jest.fn();
+
 /**
  * Takes in rowState as prop [ { player, highlight } ]
  * Generates array of BoardPlayCells using rowState data
@@ -32,14 +35,14 @@ function createRowState(rows=1, players=0, highlights=0) {
   return rowState;
 }
 
-jest.mock('./BoardPlayCell');
-
 test('BoardPlayRow renders without crashing when passed valid props', () => {
 
   let rowState = createRowState()
 
   const { container } = render(
+    <table><tbody>
     <BoardPlayRow rowState={rowState} />
+    </tbody></table>
   );
 
   const boardDropRowTr = container.querySelector("tr");
@@ -50,7 +53,11 @@ test('BoardPlayRow passes correct params to correct # child components', () => {
 
   let rowState = createRowState(3)
 
-  render(<BoardPlayRow rowState={rowState} />);
+  render(
+    <table><tbody>
+    <BoardPlayRow rowState={rowState} />
+    </tbody></table>
+  );
 
   expect(BoardPlayCell).toHaveBeenCalledTimes(3);
 
@@ -64,7 +71,11 @@ test('BoardPlayRow passes correct highlight and color values to child component'
 
   let rowState = createRowState(1, 1, 1)
 
-  render(<BoardPlayRow rowState={rowState} />);
+  render(
+    <table><tbody>
+    <BoardPlayRow rowState={rowState} />
+    </tbody></table>
+  );
 
   expect(BoardPlayCell).toHaveBeenCalledWith({
     color: '#f3f3f3',

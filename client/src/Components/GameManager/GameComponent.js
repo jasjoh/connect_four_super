@@ -17,7 +17,7 @@ function GameComponent({ game, dropPiece, startGame }) {
 
   /** Handles user clicks on start / restart button */
   function handleStartGame() {
-    console.log('startGame button clicked');
+    // console.log('startGame button clicked');
     startGame();
   }
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, act, waitFor } from '@testing-library/react';
 import Main from './Main';
-import GameComponent from './GameComponent';
-import PlayerManager from './PlayerManager';
+import GameComponent from './GameManager/GameComponent';
+import PlayerManager from './GameManager/PlayerManager';
 import { Game, AiPlayer, Player } from '../models';
 
 /**
@@ -11,8 +11,9 @@ import { Game, AiPlayer, Player } from '../models';
  * Main creates. It is supplemented by the tests in Main.realGame.test.js.
  */
 
-jest.mock('./GameComponent');
-jest.mock('./PlayerManager');
+jest.mock('./GameManager/GameComponent');
+jest.mock('./GameManager/PlayerManager');
+jest.mock('./GameList');
 jest.mock('../models');
 
 test('Main component renders without crashing', () => {
@@ -57,7 +58,7 @@ test('Main component handles dropPiece() calls and re-renders', () => {
 
   // track how many times Main has rendered by counting mock Game calls
   const priorGameComponentCalls = GameComponent.mock.calls.length;
-  console.log("GameComponent calls", GameComponent.mock.calls.length);
+  // console.log("GameComponent calls", GameComponent.mock.calls.length);
 
   // call dropPiece() with colIndex 2
   act(() => {
@@ -79,7 +80,7 @@ test('Main component handles addPlayer() calls and re-renders', () => {
 
   // track how many times Main has rendered by counting mock Game calls
   const priorGameComponentCalls = GameComponent.mock.calls.length;
-  console.log("GameComponent calls", GameComponent.mock.calls.length);
+  // console.log("GameComponent calls", GameComponent.mock.calls.length);
 
   const aiFormData = {
     ai: true,
@@ -124,7 +125,7 @@ test('Main component handles removePlayer() calls and re-renders', () => {
 
   // track how many times Main has rendered by counting mock Game calls
   const priorGameComponentCalls = GameComponent.mock.calls.length;
-  console.log("GameComponent calls", GameComponent.mock.calls.length);
+  // console.log("GameComponent calls", GameComponent.mock.calls.length);
 
   act(() => {
     mainRemovePlayer('1234');
@@ -147,7 +148,7 @@ test('Main component handles startGame() calls and re-renders', async () => {
 
   // track how many times Main has rendered by counting mock Game calls
   const priorGameComponentCalls = GameComponent.mock.calls.length;
-  console.log("GameComponent calls", GameComponent.mock.calls.length);
+  // console.log("GameComponent calls", GameComponent.mock.calls.length);
 
   act(() => {
     mainAddPlayer({

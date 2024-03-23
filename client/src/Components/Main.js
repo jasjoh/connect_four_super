@@ -1,5 +1,5 @@
-import GameComponent from "./GameComponent";
-import PlayerManager from "./PlayerManager";
+import GameComponent from "./GameManager/GameComponent";
+import PlayerManager from "./GameManager/PlayerManager";
 import { Player, AiPlayer, Game } from "../models";
 import { useEffect, useState } from "react";
 import GameList from "./GameList";

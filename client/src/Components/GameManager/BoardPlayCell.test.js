@@ -7,7 +7,9 @@ jest.mock('./GamePiece');
 
 test('BoardPlayCell renders without crashing when passed valid props', () => {
   const { container } = render(
+    <table><tbody><tr>
     <BoardPlayCell highlight={false} color={undefined} />
+    </tr></tbody></table>
   );
 
   const boardPlayCellTd = container.querySelector("td");
@@ -16,7 +18,9 @@ test('BoardPlayCell renders without crashing when passed valid props', () => {
 
 test('BoardPlayCell renders with highlight when expected', () => {
   const { container } = render(
+    <table><tbody><tr>
     <BoardPlayCell highlight={true} color={undefined} />
+    </tr></tbody></table>
   );
 
   const boardPlayCellTd = container.querySelector("td");
@@ -26,7 +30,11 @@ test('BoardPlayCell renders with highlight when expected', () => {
 });
 
 test('BoardPlayRow passes correct params to child component', () => {
-  render(<BoardPlayCell color={'#c3c3c3'} highlight={true} />);
+  render(
+    <table><tbody><tr>
+    <BoardPlayCell color={'#c3c3c3'} highlight={true} />
+    </tr></tbody></table>
+  );
 
   expect(GamePiece).toHaveBeenCalledWith({
     color: '#c3c3c3'

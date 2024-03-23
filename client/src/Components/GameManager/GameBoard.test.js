@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import GameBoard from './GameBoard'
 import BoardPlayRow from './BoardPlayRow';
 import BoardDropRow from './BoardDropRow';
-import { createBoardState, setCellState } from '../testHelpers';
+import { createBoardState, setCellState } from '../../testHelpers';
 
 /**
  * Props:

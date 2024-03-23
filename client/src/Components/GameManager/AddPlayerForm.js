@@ -42,7 +42,7 @@ function AddPlayerForm({ add }) {
   }
 
   function handleSubmit(evt) {
-    console.log("handleSubmit called");
+    // console.log("handleSubmit called");
     evt.preventDefault();
     add(formData);
   }

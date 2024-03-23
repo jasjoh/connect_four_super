@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
 import Main from './Main';
-import GameComponent from './GameComponent';
+import GameComponent from './GameManager/GameComponent';
 
 /**
  * These tests for Main rely on access to properties in the Game instance
@@ -9,7 +9,8 @@ import GameComponent from './GameComponent';
  * these properties, this file maintains those tests which do require it.
  */
 
-jest.mock('./GameComponent');
+jest.mock('./GameManager/GameComponent');
+jest.mock('./GameList');
 
 test('Main component listens for aiCallback() and re-renders', () => {
 
@@ -22,7 +23,6 @@ test('Main component listens for aiCallback() and re-renders', () => {
 
   // track how many times Main has rendered by counting mock Game calls
   const priorGameComponentCalls = GameComponent.mock.calls.length;
-  console.log("GameComponent calls", GameComponent.mock.calls.length);
 
   // call the aiCallback()
   act(() => {
