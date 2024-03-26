@@ -38,11 +38,46 @@ class ConnectFourServerApi {
 
   // Individual API routes
 
-  /** Get a list of all listings*/
-  static async getAllGames() {
+  /** Get a list of all games */
+  static async getGames() {
     const data = await ConnectFourServerApi.request(`games`);
     console.log("retrieved games:", data);
     return data.games;
+  }
+
+  /** Get a specific game */
+  static async getGame(gameId) {
+    const data = await ConnectFourServerApi.request(`games/${gameId}`, );
+    console.log("retrieved game:", data);
+    return data.game;
+  }
+
+  /** Get all players */
+  static async getPlayers() {
+    const data = await ConnectFourServerApi.request(`players`, );
+    console.log("retrieved players:", players);
+    return data.players;
+  }
+
+  /** Get a specific player */
+  static async getPlayer(pId) {
+    const data = await ConnectFourServerApi.request(`players/${pId}`, );
+    console.log("retrieved player:", data);
+    return data.player;
+  }
+
+  /** Get all players for a specific game */
+  static async getPlayersForGame(gameId) {
+    const data = await ConnectFourServerApi.request(`games/${gameId}/players`, );
+    console.log("retrieved players:", data);
+    return data.players;
+  }
+
+  /** Get all turns for a specific game */
+  static async getTurnsForGame(gameId) {
+    const data = await ConnectFourServerApi.request(`games/${gameId}/turns`, );
+    console.log("retrieved turns:", data);
+    return data.turns;
   }
 
 }
