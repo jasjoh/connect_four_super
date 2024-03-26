@@ -80,5 +80,71 @@ class ConnectFourServerApi {
     return data.turns;
   }
 
+  /** Creates a new player
+   * Expects: { name, color, ai }
+   * Returns: { id, name, color, ai, createdOn }
+   */
+  static async createPlayer(player) {
+    const data = await ConnectFourServerApi.request(`players`, player, 'POST' );
+    console.log("created player:", data);
+    return data.player;
+  }
+
+  /** Creates a new game
+   * Expects: Game dimensions: { height, width }
+   * Returns: { id, boardId, boardData, boardWidth, boardHeight, gameState.
+   *    placedPieces, winningSet, currPlayerId, createdOn, totalPlayers }
+   */
+  static async createGame(dimensions) {
+    const data = await ConnectFourServerApi.request(`games`, dimensions, 'POST' );
+    console.log("created game:", data);
+    return data.game;
+  }
+
+  /** Start (or restart) an existing game
+   * Returns the started / restarted game */
+  static async startGame(gameId) {
+    const data = await ConnectFourServerApi.request(`games/${gameId}/start`, {}, 'POST' );
+    console.log("started game:", data);
+    return data.game;
+  }
+
+  /** Attempts to drop a piece
+   * Expects: gameId, playerId, col
+   * Returns undefined if successful and throws error otherwise */
+  static async dropPiece(gameId, playerId, col) {
+    const data = await ConnectFourServerApi.request(
+      `games/${gameId}/cols/${col}`, { playerId: playerId }, 'POST'
+    );
+    console.log("drop piece response:", data);
+    return undefined;
+  }
+
+  /** Adds an array of players to a game
+   * Expects: gameId, [ playerId ]
+   * Returns: { playerCount }
+   */
+  static async addPlayer(gameId, players) {
+    const data = await ConnectFourServerApi.request(`games/${gameId}/players`, players, 'POST' );
+    console.log("updated player count:", data);
+    return data;
+  }
+
+  /** Deletes a player (from the database completely)
+   * Returns undefined if successful and throws error otherwise */
+  static async deletePlayer(playerId) {
+    const data = await ConnectFourServerApi.request(`players/${playerId}`, {}, 'DELETE' );
+    console.log("player delete response:", data);
+    return undefined;
+  }
+
+  /** Removes a player from a game
+   * Returns undefined if successful and throws error otherwise */
+  static async removePlayerFromGame(gameId, playerId) {
+    const data = await ConnectFourServerApi.request(`games/${gameId}/players/${playerId}`, {}, 'DELETE' );
+    console.log("removed player response:", data);
+    return undefined;
+  }
+
 }
 export default ConnectFourServerApi;
