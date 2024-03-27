@@ -55,7 +55,7 @@ class ConnectFourServerApi {
   /** Get all players */
   static async getPlayers() {
     const data = await ConnectFourServerApi.request(`players`, );
-    console.log("retrieved players:", players);
+    console.log("retrieved players:", data.players);
     return data.players;
   }
 
@@ -124,7 +124,7 @@ class ConnectFourServerApi {
    * Expects: gameId, [ playerId ]
    * Returns: { playerCount }
    */
-  static async addPlayer(gameId, players) {
+  static async addPlayers(gameId, players) {
     const data = await ConnectFourServerApi.request(`games/${gameId}/players`, players, 'POST' );
     console.log("updated player count:", data);
     return data;

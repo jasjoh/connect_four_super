@@ -2,7 +2,7 @@ import ConnectFourServerApi from "../server";
 import { useState, useEffect } from "react";
 import GameListing from "./GameListing";
 
-/** Displays the list of games
+/** Displays the list of available games
  *
  * Props:
  *  - None
@@ -13,14 +13,14 @@ import GameListing from "./GameListing";
  *
  * Main -> GameList */
 function GameList() {
-  console.log("GameList re-rendered");
+  // console.log("GameList re-rendered");
 
   const [gameList, setGameList] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(function fetchGameListOnMount(){
     async function fetchGameListings(){
-      const gameList = await ConnectFourServerApi.getAllGames();
+      const gameList = await ConnectFourServerApi.getGames();
       console.log("retrieved gameList:", gameList);
       setGameList(gameList);
       setIsLoading(false);
