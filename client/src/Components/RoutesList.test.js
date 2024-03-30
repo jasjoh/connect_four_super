@@ -15,7 +15,7 @@ test('renders Main component for / route', () => {
   expect(Main).toHaveBeenCalled();
 });
 
-test('redirects to Main for unknown routes', () => {
+test('redirects to Main component for unknown routes', () => {
   render(
     <MemoryRouter initialEntries={['/unknown']}>
       <RoutesList />

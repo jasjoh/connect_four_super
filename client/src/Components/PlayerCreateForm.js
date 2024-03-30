@@ -1,21 +1,21 @@
 import { useState } from "react";
-// import "./AddPlayerForm.css"
+import "./PlayerCreateForm.css"
 
-/** An individual game piece dropped by a player
+/** A form for creating a new player
  *
  * Props:
- *  - add(): A callback function for when a player is added by a user
+ *  - createPlayer(): A callback function for form submission
  *
  * State:
  *  - None
  *
- * PlayerManager -> AddPlayerForm*/
+ * PlayerList -> PlayerCreateForm */
 
-function AddPlayerForm({ add }) {
-  // console.log("AddPlayerForm re-rendered");
+function PlayerCreateForm({ createPlayer }) {
+  // console.log("PlayerCreateForm re-rendered");
 
   const [formData, setFormData] = useState({
-    playerName: "",
+    name: "",
     color: "#3c3c3c",
     ai: false
   });
@@ -42,47 +42,47 @@ function AddPlayerForm({ add }) {
   }
 
   function handleSubmit(evt) {
-    // console.log("handleSubmit called");
+    console.log("handleSubmit called");
     evt.preventDefault();
-    add(formData);
+    createPlayer(formData);
   }
 
   return (
-    <div className="AddPlayerForm">
+    <div className="PlayerCreateForm">
       <form onSubmit={ handleSubmit }>
         <div>
-          <label htmlFor="addPlayerForm-playerName">Player Name:</label>
+          <label htmlFor="playerCreateForm-name">Player Name:</label>
           <input
-            id="addPlayerForm-playerName"
-            name="playerName"
-            value={formData.playerName}
+            id="playerCreateForm-name"
+            name="name"
+            value={formData.name}
             onChange={handleChange}>
           </input>
         </div>
         <div>
-          <label htmlFor="addPlayerForm-color">Color:</label>
+          <label htmlFor="playerCreateForm-color">Color:</label>
           <input
             type="color"
-            id="addPlayerForm-color"
+            id="playerCreateForm-color"
             name="color"
             value={formData.color}
             onChange={handleChange}>
           </input>
         </div>
         <div>
-          <label htmlFor="addPlayerForm-ai">Make AI Player:</label>
+          <label htmlFor="playerCreateForm-ai">Make AI Player:</label>
           <input
             type="checkbox"
-            id="addPlayerForm-ai"
+            id="playerCreateForm-ai"
             name="ai"
             value={formData.ai}
             onChange={handleChange}>
           </input>
         </div>
-        <div><button className="AddPlayerForm-button">Add Player</button></div>
+        <div><button className="PlayerCreateForm-button">Add Player</button></div>
       </form>
     </div>
   );
 }
 
-export default AddPlayerForm;
+export default PlayerCreateForm;

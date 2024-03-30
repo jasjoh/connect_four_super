@@ -124,7 +124,7 @@ class ConnectFourServerApi {
    * Expects: gameId, [ playerId ]
    * Returns: { playerCount }
    */
-  static async addPlayers(gameId, players) {
+  static async addPlayersToGame(gameId, players) {
     const data = await ConnectFourServerApi.request(`games/${gameId}/players`, players, 'POST' );
     console.log("updated player count:", data);
     return data;

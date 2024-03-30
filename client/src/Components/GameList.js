@@ -1,6 +1,9 @@
+import "./GameList.css";
+
 import ConnectFourServerApi from "../server";
 import { useState, useEffect } from "react";
 import GameListing from "./GameListing";
+import GameCreateForm from "./GameCreateForm";
 
 /** Displays the list of available games
  *
@@ -28,13 +31,24 @@ function GameList() {
     fetchGameListings();
   }, [])
 
+  async function createGame(formData) {
+    console.log("GameList createGame() form called with:", formData);
+    await ConnectFourServerApi.createGame(formData);
+    const updatedGameList = await ConnectFourServerApi.getGames();
+    setGameList(updatedGameList);
+  }
+
   if (isLoading) return <div><p>Loading...</p></div>
 
   return (
     <div className="GameList">
+      <GameCreateForm createGame={createGame}/>
+      <div className="GameList-list">
       {gameList.map( (g, index) => <GameListing
         key={index}
-        game={g}/>)}
+        game={g}/>)
+      }
+      </div>
     </div>
   );
 }
