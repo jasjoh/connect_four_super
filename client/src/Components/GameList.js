@@ -44,10 +44,22 @@ function GameList() {
     <div className="GameList">
       <GameCreateForm createGame={createGame}/>
       <div className="GameList-list">
-      {gameList.map( (g, index) => <GameListing
-        key={index}
-        game={g}/>)
-      }
+        <table className="GameList-table">
+          <thead className="GameList-thead">
+            <tr>
+              <td className="GameList-td">{`Game ID`}</td>
+              <td className="GameList-td">{`Game State`}</td>
+              <td className="GameList-td">{`Created On`}</td>
+              <td className="GameList-td">{`Total Players`}</td>
+            </tr>
+          </thead>
+          <tbody className="GameList-tbody">
+            { gameList.map( (g, index) => <GameListing
+              key={index}
+              game={g}/>
+            ) }
+          </tbody>
+        </table>
       </div>
     </div>
   );
