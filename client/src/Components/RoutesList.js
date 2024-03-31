@@ -18,8 +18,8 @@ import PlayerDetails from "./PlayerDetails.js";
 function RoutesList() {
   return (
     <Routes>
-      <Route path="/games/:gameId/play" element={<GameDetails />} />
-      <Route path="/games/:gameId" element={<PlayGame />} />
+      <Route path="/games/:gameId/play" element={<PlayGame />} />
+      <Route path="/games/:gameId" element={<GameDetails />} />
       <Route path="/games" element={<Main subComponent={GameList}/>} />
       <Route path="/players/:playerId" element={<PlayerDetails />} />
       <Route path="/players" element={<Main subComponent={PlayerList}/>} />
