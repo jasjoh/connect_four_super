@@ -1,0 +1,14 @@
+.GameDetails-gamePlayers {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.GameDetails-gamePlayers-title, .GameDetails-gameDetails-title {
+  vertical-align: middle;
+  font-size: 1.75em;
+}
+
+.GameDetails-gamePlayers-button, .GameDetails-gameDetails-button {
+  vertical-align: middle;
+  margin-left: 10px;
+}

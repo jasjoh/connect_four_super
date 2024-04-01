@@ -1,3 +1,10 @@
+const gameStates = [
+  'New',
+  'Started',
+  'Won',
+  'Tied'
+]
+
 /** Simple function to generate hexadecimal MD5 hashes from strings */
 function generateMD5HashHex(string) {
   let currentHashVal = 0;
@@ -15,4 +22,4 @@ function generateRandomHexColor() {
   return randNum.toString(16).slice(0, 6);
 }
 
-export { generateMD5HashHex, generateRandomHexColor };
+export { gameStates, generateMD5HashHex, generateRandomHexColor };

@@ -4,28 +4,28 @@ import "./PlayerListing.css";
 /** Displays a specific player listing
  *
  * Props:
- *  - player: A player object like:
- *
+ *  - player: A player object like: *
  *    id: string;
       name: string;
       color: string;
       ai: boolean;
       createdOn: timestamp;
+
  * - deletePlayer: A callback function to delete a player
 
  * State:
  *  - None
  *
  * PlayerList -> PlayerListing */
-  function PlayerListing({ player, deletePlayer }) {
+  function PlayerListing({ player, deletePlayer, gamePlayers }) {
     // console.log("PlayerListing re-rendered");
 
     // const navigate = useNavigate();
 
-    // function playerClick(evt) {
-    //   console.log("Player row clicked. Navigating to:", `/players/${player.id}`);
-    //   navigate(`/players/${player.id}`);
-    // }
+    function buttonClick(evt) {
+      console.log(`deletePlayer button clicked; calling deletePlayer() callback`);
+      deletePlayer(player.id);
+    }
 
     // onClick={playerClick}
     return (
@@ -40,6 +40,17 @@ import "./PlayerListing.css";
         >{`${player.color}`}</td>
         <td className="PlayerListing-td">{`${player.ai}`}</td>
         <td className="PlayerListing-td">{`${player.createdOn}`}</td>
+        { deletePlayer ?
+          (
+            <td className="PlayerListing-td-button" onClick={buttonClick}>
+              <button>
+                {gamePlayers ? 'REMOVE' : 'DELETE'}
+              </button>
+            </td>
+          ) : (
+            <td className="PlayerListing-td"></td>
+          )
+        }
       </tr>
     );
   }

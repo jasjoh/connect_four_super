@@ -32,6 +32,7 @@ function PlayerList({deletePlayer, playerList}) {
             <td className="PlayerList-td">{`Color`}</td>
             <td className="PlayerList-td">{`AI Flag`}</td>
             <td className="PlayerList-td">{`Created On`}</td>
+            <td className="PlayerList-td"></td>
           </tr>
         </thead>
         <tbody className="PlayerList-tbody">
@@ -39,7 +40,8 @@ function PlayerList({deletePlayer, playerList}) {
           playerList.map( (p, index) => <PlayerListing
           key={index}
           player={p}
-          deletePlayer={deletePlayer}/>)
+          deletePlayer={deletePlayer}
+          gamePlayers={false} />)
         }
         </tbody>
       </table>
