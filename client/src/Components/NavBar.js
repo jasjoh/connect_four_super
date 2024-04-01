@@ -1,4 +1,4 @@
-// import "./NavBar.css";
+import "./NavBar.css";
 import { Link } from "react-router-dom";
 
 /** Navigation bar with links to view list of games or players

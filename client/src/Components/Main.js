@@ -1,3 +1,4 @@
+import "./Main.css";
 import NavBar from "./NavBar";
 
 /** Parent level component for displaying nav bar and all other components

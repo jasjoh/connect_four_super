@@ -23,6 +23,7 @@ function GameList() {
 
   useEffect(function fetchGameListOnMount(){
     async function fetchGameListings(){
+      console.log("fetchGameListOnMount() called thus component is being re-mounted");
       const gameList = await ConnectFourServerApi.getGames();
       console.log("retrieved gameList:", gameList);
       setGameList(gameList);

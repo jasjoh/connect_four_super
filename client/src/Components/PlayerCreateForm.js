@@ -9,7 +9,7 @@ import "./PlayerCreateForm.css"
  * State:
  *  - None
  *
- * PlayerList -> PlayerCreateForm */
+ * PlayerListAndCreate -> PlayerCreateForm */
 
 function PlayerCreateForm({ createPlayer }) {
   // console.log("PlayerCreateForm re-rendered");

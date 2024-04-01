@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Main from "./Main.js";
 import PlayGame from "./PlayGame.js";
 import GameList from "./GameList.js";
-import PlayerList from "./PlayerList.js";
+import PlayerListAndCreate from "./PlayerListAndCreate.js";
 import GameDetails from "./GameDetails.js";
 import PlayerDetails from "./PlayerDetails.js";
 
@@ -22,7 +22,7 @@ function RoutesList() {
       <Route path="/games/:gameId" element={<GameDetails />} />
       <Route path="/games" element={<Main subComponent={GameList}/>} />
       <Route path="/players/:playerId" element={<PlayerDetails />} />
-      <Route path="/players" element={<Main subComponent={PlayerList}/>} />
+      <Route path="/players" element={<Main subComponent={PlayerListAndCreate}/>} />
       <Route path="*" element={<Navigate to="/games" />} />
     </Routes>
   );

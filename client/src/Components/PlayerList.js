@@ -1,70 +1,50 @@
 import "./PlayerList.css";
 
-import ConnectFourServerApi from "../server";
-import { useState, useEffect } from "react";
 import PlayerListing from "./PlayerListing.js";
-import PlayerCreateForm from "./PlayerCreateForm.js";
+
 
 /** Displays the list of existing players
  *
  * Props:
- *  - None
+ *  - deletePlayer: callback function to delete a player
+ *  - playerList: an array [] of players to display in a list
+ *  -- player object like:  *
+ *    id: string;
+      name: string;
+      color: string;
+      ai: boolean;
+      createdOn: timestamp;
  *
  * State:
- *  - games: The games retrieved from the server
- *  - isLoading: A flag to keep track of whether games have been loaded
+ *  - none
  *
- * Main -> GameList */
-function GameList() {
-  // console.log("GameList re-rendered");
-
-  const [playerList, setPlayerList] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(function fetchPlayerListOnMount(){
-    async function fetchPlayerListings(){
-      const playerList = await ConnectFourServerApi.getPlayers();
-      console.log("retrieved playerList:", playerList);
-      setPlayerList(playerList);
-      setIsLoading(false);
-    }
-    fetchPlayerListings();
-  }, [])
-
-  async function createPlayer(formData) {
-    console.log("PlayerList createPlayer() form called with:", formData);
-    await ConnectFourServerApi.createPlayer(formData);
-    const updatedPlayerList = await ConnectFourServerApi.getPlayers();
-    setPlayerList(updatedPlayerList);
-  }
-
-  if (isLoading) return <div><p>Loading...</p></div>
+ * PlayerListAndCreate -> PlayerList -> PlayerListing */
+function PlayerList({deletePlayer, playerList}) {
+  // console.log("PlayerList re-rendered");
 
   return (
     <div className="PlayerList">
-      <PlayerCreateForm createPlayer={createPlayer} />
-      <div className="PlayerList-list">
-        <table className="PlayerList-table">
-          <thead className="PlayerList-thead">
-            <tr>
-              <td className="PlayerList-td">{`ID`}</td>
-              <td className="PlayerList-td">{`Name`}</td>
-              <td className="PlayerList-td">{`Color`}</td>
-              <td className="PlayerList-td">{`AI Flag`}</td>
-              <td className="PlayerList-td">{`Created On`}</td>
-            </tr>
-          </thead>
-          <tbody className="PlayerList-tbody">
-          {
-            playerList.map( (p, index) => <PlayerListing
-            key={index}
-            player={p}/>)
-          }
-          </tbody>
-        </table>
-      </div>
+      <table className="PlayerList-table">
+        <thead className="PlayerList-thead">
+          <tr>
+            <td className="PlayerList-td">{`ID`}</td>
+            <td className="PlayerList-td">{`Name`}</td>
+            <td className="PlayerList-td">{`Color`}</td>
+            <td className="PlayerList-td">{`AI Flag`}</td>
+            <td className="PlayerList-td">{`Created On`}</td>
+          </tr>
+        </thead>
+        <tbody className="PlayerList-tbody">
+        {
+          playerList.map( (p, index) => <PlayerListing
+          key={index}
+          player={p}
+          deletePlayer={deletePlayer}/>)
+        }
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default GameList;
+export default PlayerList;

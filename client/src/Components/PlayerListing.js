@@ -11,12 +11,13 @@ import "./PlayerListing.css";
       color: string;
       ai: boolean;
       createdOn: timestamp;
- *
+ * - deletePlayer: A callback function to delete a player
+
  * State:
  *  - None
  *
  * PlayerList -> PlayerListing */
-  function PlayerListing({ player }) {
+  function PlayerListing({ player, deletePlayer }) {
     // console.log("PlayerListing re-rendered");
 
     // const navigate = useNavigate();
@@ -43,4 +44,4 @@ import "./PlayerListing.css";
     );
   }
 
-      export default PlayerListing;
+export default PlayerListing;

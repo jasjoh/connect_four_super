@@ -24,7 +24,7 @@ import NavBar from "./NavBar.js";
 
     const { playerId } = useParams();
 
-    useEffect(function fetchPlayerOnMount(){
+    useEffect(function fetchPlayersEffect(){
       async function fetchPlayer(){
         const player = await ConnectFourServerApi.getPlayer(playerId);
         console.log("retrieved player:", player);
@@ -32,7 +32,7 @@ import NavBar from "./NavBar.js";
         setIsLoading(false);
       }
       fetchPlayer();
-    }, [])
+    }, [playerId])
 
     if (isLoading) return <div><p>Loading...</p></div>
 
