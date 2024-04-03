@@ -48,15 +48,15 @@ import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
 
     async function removePlayer(playerId) {
       console.log("removePlayer() called for player ID:", playerId);
-      await ConnectFourServerApi.removePlayerFromGame(gameId);
-      const updatedGamePlayers = ConnectFourServerApi.getPlayersForGame(gameId);
+      await ConnectFourServerApi.removePlayerFromGame(gameId, playerId);
+      const updatedGamePlayers = await ConnectFourServerApi.getPlayersForGame(gameId);
       setGamePlayers(updatedGamePlayers);
     }
 
     async function addPlayerToGame(playerId) {
       console.log("addPlayerToGame() called for player ID:", playerId);
       await ConnectFourServerApi.addPlayersToGame(gameId, [playerId]);
-      const updatedGamePlayers = ConnectFourServerApi.getPlayersForGame(gameId);
+      const updatedGamePlayers = await ConnectFourServerApi.getPlayersForGame(gameId);
       setGamePlayers(updatedGamePlayers);
     }
 

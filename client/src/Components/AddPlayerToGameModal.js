@@ -18,6 +18,7 @@ import PlayerList from "./PlayerList.js";
  * GameDetails -> AddPlayerToGameModal -> PlayerList */
 function AddPlayerToGameModal({isOpen, gamePlayers, closeModal, gameId, addPlayerToGame}) {
   console.log("AddPlayerToGameModal re-rendered");
+  console.log("received gamePlayers:", gamePlayers);
 
   const [availPlayersList, setAvailPlayerList] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
