@@ -4,6 +4,8 @@ import "./PlayerListing.css";
 /** Displays a specific player listing
  *
  * Props:
+ *  - action: callback function representing the action available for each player
+ *  - actionType: the type of action ('deletePlayer', 'addPlayer', 'removePlayer')
  *  - player: A player object like: *
  *    id: string;
       name: string;
@@ -11,20 +13,34 @@ import "./PlayerListing.css";
       ai: boolean;
       createdOn: timestamp;
 
- * - deletePlayer: A callback function to delete a player
-
  * State:
  *  - None
  *
  * PlayerList -> PlayerListing */
-  function PlayerListing({ player, deletePlayer, gamePlayers }) {
+  function PlayerListing({ player, action, actionType }) {
     // console.log("PlayerListing re-rendered");
 
     // const navigate = useNavigate();
 
+    let buttonText = '';
+
+    switch(actionType) {
+      case 'deletePlayer':
+        buttonText = 'DELETE'
+        break;
+      case 'removePlayer':
+        buttonText = 'REMOVE'
+        break;
+      case 'addPlayerToGame':
+        buttonText = 'ADD TO GAME'
+        break;
+      default:
+        break;
+    }
+
     function buttonClick(evt) {
-      console.log(`deletePlayer button clicked; calling deletePlayer() callback`);
-      deletePlayer(player.id);
+      console.log(`action button clicked; calling provided action callback`);
+      action(player.id);
     }
 
     // onClick={playerClick}
@@ -40,12 +56,10 @@ import "./PlayerListing.css";
         >{`${player.color}`}</td>
         <td className="PlayerListing-td">{`${player.ai}`}</td>
         <td className="PlayerListing-td">{`${player.createdOn}`}</td>
-        { deletePlayer ?
+        { action ?
           (
             <td className="PlayerListing-td-button" onClick={buttonClick}>
-              <button>
-                {gamePlayers ? 'REMOVE' : 'DELETE'}
-              </button>
+              <button>{buttonText}</button>
             </td>
           ) : (
             <td className="PlayerListing-td"></td>

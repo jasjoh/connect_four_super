@@ -51,7 +51,7 @@ function PlayerListAndCreate() {
   return (
     <div className="PlayerListAndCreate">
       <PlayerCreateForm createPlayer={createPlayer} />
-      <PlayerList deletePlayer={deletePlayer} playerList={playerList} />
+      <PlayerList action={deletePlayer} playerList={playerList} actionType={'deletePlayer'} />
     </div>
   );
 }

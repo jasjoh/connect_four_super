@@ -7,6 +7,7 @@ import "./GameDetails.css";
 
 import NavBar from "./NavBar.js";
 import PlayerList from "./PlayerList.js";
+import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
 
 // import "./GameDetails.css";
 
@@ -21,10 +22,11 @@ import PlayerList from "./PlayerList.js";
  *
  * PlayerList -> GameDetails */
   function GameDetails() {
-    // console.log("GameDetails re-rendered");
+    console.log("GameDetails re-rendered");
 
     const [game, setGame] = useState(null);
     const [gamePlayers, setGamePlayers] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     const { gameId } = useParams();
@@ -70,11 +72,20 @@ import PlayerList from "./PlayerList.js";
       navigate(`/`);
     }
 
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
     if (isLoading) return <div><p>Loading...</p></div>
 
     return (
       <div className="GameDetails">
         <NavBar />
+        <AddPlayerToGameModal
+          isOpen={isModalOpen}
+          gameId={gameId}
+          gamePlayers={gamePlayers}
+          closeModal={closeModal}
+          addPlayerToGame={addPlayerToGame} />
         <div className="GameDetails-gameDetails">
           <span className="GameDetails-gameDetails-title">Game Details</span>
           <button onClick={playGame} className="GameDetails-gameDetails-button">Play</button>
@@ -84,9 +95,9 @@ import PlayerList from "./PlayerList.js";
         </div>
         <div className="GameDetails-gamePlayers">
           <span className="GameDetails-gamePlayers-title">Game Players</span>
-          <button className="GameDetails-gamePlayers-button">Add Player</button>
+          <button onClick={openModal} className="GameDetails-gamePlayers-button">Add Player</button>
           { gamePlayers.length > 0 ?
-          ( <PlayerList players={gamePlayers} deletePlayer={removePlayer} gamePlayers={true} /> ) :
+          ( <PlayerList playerList={gamePlayers} action={removePlayer} actionType={'removePlayer'} /> ) :
           ( <div>No Players Added to Game</div> ) }
         </div>
       </div>

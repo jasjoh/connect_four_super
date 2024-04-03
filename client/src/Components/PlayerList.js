@@ -6,7 +6,8 @@ import PlayerListing from "./PlayerListing.js";
 /** Displays the list of existing players
  *
  * Props:
- *  - deletePlayer: callback function to delete a player
+ *  - action: callback function representing the action available for each player
+ *  - actionType: the type of action ('deletePlayer', 'addPlayer', 'removePlayer')
  *  - playerList: an array [] of players to display in a list
  *  -- player object like:  *
  *    id: string;
@@ -19,7 +20,7 @@ import PlayerListing from "./PlayerListing.js";
  *  - none
  *
  * PlayerListAndCreate -> PlayerList -> PlayerListing */
-function PlayerList({deletePlayer, playerList}) {
+function PlayerList({playerList, action, actionType}) {
   // console.log("PlayerList re-rendered");
 
   return (
@@ -40,8 +41,8 @@ function PlayerList({deletePlayer, playerList}) {
           playerList.map( (p, index) => <PlayerListing
           key={index}
           player={p}
-          deletePlayer={deletePlayer}
-          gamePlayers={false} />)
+          action={action}
+          actionType={actionType} />)
         }
         </tbody>
       </table>
