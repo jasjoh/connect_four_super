@@ -62,7 +62,6 @@ import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
 
     async function playGame() {
       console.log("playGame() called");
-      await ConnectFourServerApi.startGame(gameId);
       navigate(`/games/${game.id}/play`);
     }
 
