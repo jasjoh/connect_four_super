@@ -15,7 +15,7 @@ import BoardDropRow from "./BoardDropRow";
  *  - None
  *
  * Main -> GameBoard -> [ BoardDropRow, BoardPlayRow ] */
-function GameBoard({ boardState, dropPiece }) {
+function GameBoard({ boardState, gamePlayers, dropPiece }) {
   console.log("GameBoard re-rendered");
   console.log("called w/ boardState:", boardState);
   /**
@@ -29,7 +29,7 @@ function GameBoard({ boardState, dropPiece }) {
   // Build array of BoardPlayRows
   let boardPlayRowsJsx = boardState.map( (row, index) => {
     // console.log("new play row being added for row, index:", row, index);
-    return <BoardPlayRow key={index} rowState={row} />;
+    return <BoardPlayRow key={index} rowState={row} gamePlayers={gamePlayers} />;
   })
 
   return (

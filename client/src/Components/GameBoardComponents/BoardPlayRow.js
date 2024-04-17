@@ -11,7 +11,7 @@ import BoardPlayCell from "./BoardPlayCell";
  *  - None
  *
  * GameBoard -> BoardPlayRow -> BoardPlayCell */
-function BoardPlayRow({ rowState }) {
+function BoardPlayRow({ rowState, gamePlayers }) {
   // console.log("BoardPlayRow re-rendered");
   // console.log("rowState passed in is:", rowState);
 
@@ -19,7 +19,10 @@ function BoardPlayRow({ rowState }) {
   for (let i = 0; i < rowState.length; i++) {
     let color = undefined;
     let highlight = false;
-    if (rowState[i].player) { color = rowState[i].player.color; }
+    if (rowState[i].playerId) {
+      const player = gamePlayers.find(p => p.id === rowState[i].playerId)
+      color = player.color;
+    }
     if (rowState[i].highlight) { highlight = true; }
     cellsJsx.push(
       <BoardPlayCell key={i} highlight={highlight} color={color} />

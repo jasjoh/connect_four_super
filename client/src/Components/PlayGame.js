@@ -58,8 +58,11 @@ function PlayGame() {
     navigate(`/games/${game.id}`);
   }
 
-  function dropPiece() {
-    console.log("dropPiece() called");
+  async function dropPiece(colIndex) {
+    console.log("dropPiece() called with colIndex:", colIndex);
+    await ConnectFourServerApi.dropPiece(game.id, game.currPlayerId, colIndex);
+    const updatedGame = await ConnectFourServerApi.getGame(game.id);
+    setGame(updatedGame);
   }
 
   if (isLoading) return <div><p>Loading...</p></div>
@@ -83,7 +86,11 @@ function PlayGame() {
           Manage Players
         </button>
       </div>
-      <GameBoard boardState={game.boardData} dropPiece={dropPiece}></GameBoard>
+      <GameBoard
+        boardState={game.boardData}
+        gamePlayers={gamePlayers}
+        dropPiece={dropPiece}>
+      </GameBoard>
     </div>
   );
 }
