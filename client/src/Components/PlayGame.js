@@ -24,6 +24,7 @@ function PlayGame() {
   const [game, setGame] = useState(null);
   const [gamePlayers, setGamePlayers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [gameTurns, setGameTurns] = useState(null);
 
   const { gameId } = useParams();
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ function PlayGame() {
       <PlayerList playerList={gamePlayers} />
       <div className="PlayGame-manageButtons">
         <button className="PlayGame-manageButtons-button" onClick={startGame}>
-          {game.gameState === 1 ? 'Restart' : 'Start'}
+          {game.gameState === 0 ? 'Start' : 'Restart'}
         </button>
         <button className="PlayGame-manageButtons-button" onClick={deleteGame}>
           Delete

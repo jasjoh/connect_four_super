@@ -22,4 +22,9 @@ function generateRandomHexColor() {
   return randNum.toString(16).slice(0, 6);
 }
 
-export { gameStates, generateMD5HashHex, generateRandomHexColor };
+/** Serves as a 'wait n ms' capability */
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export { delay, gameStates, generateMD5HashHex, generateRandomHexColor };
