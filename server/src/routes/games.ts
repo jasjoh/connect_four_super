@@ -76,7 +76,7 @@ router.post("/:gameid/cols/:colid", async function (
   return res.sendStatus(200);
 });
 
-/** Starts the specified game (based on 'id' in URL param)
+/** Starts or restarts the specified game (based on 'id' in URL param)
  * Returns 200 OK with no body if successful
  */
 router.post("/:id/start", async function (req: Request, res: Response) {

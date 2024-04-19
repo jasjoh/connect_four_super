@@ -37,7 +37,7 @@ export class Turn {
    * Returns an array of 0 or more turns in the form of TurnInterface[]
    */
   static async getAll(gameId: string, playerId?: string) : Promise<TurnInterface[]> {
-    console.log("Turns.getTurns() called");
+    console.log("Turns.getAll() called");
 
     let whereConditions : string = 'game_id = $1';
     let values = [gameId];
@@ -61,4 +61,24 @@ export class Turn {
   }
 
 
+  /**
+   * Deletes all the turns associated with a game and optionally a specific player
+   * Returns undefined if successful
+   */
+  static async deleteAll(gameId: string, playerId?: string) : Promise<undefined> {
+    console.log("Turns.deleteAll() called");
+
+    let whereConditions : string = 'game_id = $1';
+    let values = [gameId];
+    if (playerId !== undefined) {
+      whereConditions += ' AND player_id = $2';
+      values.push(playerId);
+    }
+    const sqlQuery = `
+      DELETE
+      FROM game_turns
+      WHERE ${whereConditions}
+    `
+    await db.query(sqlQuery, values);
+  }
 }

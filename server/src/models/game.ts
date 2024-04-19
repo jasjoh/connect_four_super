@@ -355,7 +355,7 @@ class Game {
     return result.rows;
   }
 
-  /** Starts a new game (conductor function)
+  /** Starts or restarts a game (conductor function)
    * - initializes (or resets) boards state
    * - sets (or resets) play order
    * - updates game state to started
@@ -377,8 +377,9 @@ class Game {
 
     const gamePlayers = await Game.getPlayers(gameId);
 
-    // initialize a new game and start the first turn if directed to
+    // initialize the game and start the first turn if directed to
     await Board.reset(game.boardId);
+    await Turn.deleteAll(gameId);
 
     await _setPlayOrder();
 

@@ -1,7 +1,10 @@
 import ConnectFourServerApi from "../server";
+import { GameTurnsManager } from "../gameTurnsManager.js";
+import { gameStates } from "../utils.js";
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { gameStates } from "../utils.js";
+
 import PlayerList from "./PlayerList.js";
 import GameBoard from "./GameBoardComponents/GameBoard.js";
 
@@ -21,31 +24,35 @@ import GameBoard from "./GameBoardComponents/GameBoard.js";
 function PlayGame() {
   // console.log("PlayGame re-rendered");
 
-  const [game, setGame] = useState(null);
-  const [gamePlayers, setGamePlayers] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [gameTurns, setGameTurns] = useState(null);
-
   const { gameId } = useParams();
   const navigate = useNavigate();
 
-  useEffect(function fetchGameAndPlayersEffect(){
-    async function fetchGameAndPlayers(){
+  const [game, setGame] = useState(null);
+  const [gamePlayers, setGamePlayers] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [gameTurnsManager, setGameTurnsManager] = useState(null);
+
+  useEffect(function initialGameStateEffect(){
+    async function initializeGameState(){
       const game = await ConnectFourServerApi.getGame(gameId);
       console.log("retrieved game:", game);
       setGame(game);
       const players = await ConnectFourServerApi.getPlayersForGame(gameId);
       console.log("retrieved players:", players);
       setGamePlayers(players);
+      const newGameTurnsManager = new GameTurnsManager(gameId, setGameTurnsManager);
+      setGameTurnsManager(newGameTurnsManager);
+      console.log("gameTurnsManager created and set in state:", newGameTurnsManager);
       setIsLoading(false);
     }
     console.log("fetchGameAndPlayerEffect() called; component re-mounted or gameId changed");
-    fetchGameAndPlayers();
+    initializeGameState();
   }, [gameId])
 
   async function startGame() {
     console.log("startGame() called");
     await ConnectFourServerApi.startGame(gameId);
+    gameTurnsManager.enablePolling();
   }
 
   async function deleteGame() {
@@ -67,6 +74,8 @@ function PlayGame() {
   }
 
   if (isLoading) return <div><p>Loading...</p></div>
+
+  if (game.gameState > 1) { gameTurnsManager.disablePolling(); }
 
   return (
     <div className="PlayGame">
