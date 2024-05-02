@@ -14,6 +14,15 @@ export class GameTurnsManager {
     this.pollForTurns = false;
   }
 
+  /** Conductor function:
+   * - Retrieves updated set of turns from the server
+   * - Calls this.getNewTurns() to get a list of new turns (not known by client)
+   * - For every turn, adds it to this.clientTurns and calls the callback function
+   * provided on construction with the updated clientTurns list. By default, the
+   * callback function should be a function of the PlayGame component which triggers
+   * a re-render of the entire board including the new piece represented by the added turn.
+   * - Delays evaluating next turn (if there is one) until renderTurnsDelayInMs has transpired
+   */
   async updateTurns() {
     console.log('updateTurns() called')
     const serverTurns = await ConnectFourServerApi.getTurnsForGame(this.gameId);
@@ -28,6 +37,10 @@ export class GameTurnsManager {
     }
   }
 
+  /** Returns the set of new turns based on comparing this.clientTurns
+   * against a provided list of serverTurns and returning any server turns
+   * not found in the client turns list.
+   */
   getNewTurns(serverTurns) {
     console.log("getNewTurns() called");
     const newTurnCount = serverTurns.length - this.clientTurns.length;
@@ -42,15 +55,20 @@ export class GameTurnsManager {
     return newTurns;
   }
 
+  /** Enables polling and initiates polling (via this.poll()) */
   enablePolling() {
     this.pollForTurns = true;
     this.poll();
   }
 
+  /** Disables polling such that on next poll, polling will cease. */
   disablePolling() {
     this.pollForTurns = false;
   }
 
+  /** Polling function which calls this.updateTurns() and then
+   * awaits updateTurnsDelayInMs to transpire before calling again.
+   */
   async poll() {
     while (this.pollForTurns) {
       await this.updateTurns();

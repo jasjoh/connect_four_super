@@ -31,6 +31,7 @@ function PlayGame() {
   const [gamePlayers, setGamePlayers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [gameTurnsManager, setGameTurnsManager] = useState(null);
+  const [gameTurns, setGameTurns] = useState(null);
 
   useEffect(function initialGameStateEffect(){
     async function initializeGameState(){
@@ -40,7 +41,7 @@ function PlayGame() {
       const players = await ConnectFourServerApi.getPlayersForGame(gameId);
       console.log("retrieved players:", players);
       setGamePlayers(players);
-      const newGameTurnsManager = new GameTurnsManager(gameId, setGameTurnsManager);
+      const newGameTurnsManager = new GameTurnsManager(gameId, setGameTurns);
       setGameTurnsManager(newGameTurnsManager);
       console.log("gameTurnsManager created and set in state:", newGameTurnsManager);
       setIsLoading(false);
@@ -73,6 +74,11 @@ function PlayGame() {
     setGame(updatedGame);
   }
 
+  /** For debug purposes only */
+  async function stopPolling() {
+    gameTurnsManager.disablePolling();
+  }
+
   if (isLoading) return <div><p>Loading...</p></div>
 
   if (game.gameState > 1) { gameTurnsManager.disablePolling(); }
@@ -94,6 +100,9 @@ function PlayGame() {
         </button>
         <button className="PlayGame-manageButtons-button" onClick={managePlayers}>
           Manage Players
+        </button>
+        <button className="PlayGame-manageButtons-button" onClick={stopPolling}>
+          Stop Polling
         </button>
       </div>
       <GameBoard
