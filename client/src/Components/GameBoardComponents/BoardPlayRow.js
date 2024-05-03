@@ -4,8 +4,8 @@ import BoardPlayCell from "./BoardPlayCell";
 /** Displays a row where game pieces end up after being dropped
  *
  * Props:
- *  - width: The width (# of cells) that should be rendered
- *  - dropPiece(): A callback function for when a player attempts to drop a piece
+ *  - rowState: A row on the game board [ { playerId, highlight } ]
+ *  - gamePlayers: An array of player objects { id, name, ai, color, createdOn }
  *
  * State:
  *  - None

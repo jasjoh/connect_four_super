@@ -5,11 +5,10 @@ import BoardDropRow from "./BoardDropRow";
 /** Displays the game board containing multiple cells
  *
  * Props:
- *  - boardState: The active game's state which includes:
- *  --- the height and width of the board
- *  --- where any game pieces have been placed and their color
+ *  - boardState: The active game's state [ [ { playerId, highlight } ] ]
  *  --- the winning set of game pieces (if they exist)
- *  - dropPiece(): A callback function for when a player attempts to drop a piece
+ * - gamePlayers: A list of player objects { ai, color, createdOn, id, name, playOrder }
+ * - dropPiece(): A callback function for when a player attempts to drop a piece
  *
  * State:
  *  - None

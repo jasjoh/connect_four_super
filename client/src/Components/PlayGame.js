@@ -1,5 +1,5 @@
 import ConnectFourServerApi from "../server";
-import { GameTurnsManager } from "../gameTurnsManager.js";
+import { GameManager } from "../gameManager.js";
 import { gameStates } from "../utils.js";
 
 import { useState, useEffect } from "react";
@@ -30,8 +30,8 @@ function PlayGame() {
   const [game, setGame] = useState(null);
   const [gamePlayers, setGamePlayers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [gameTurnsManager, setGameTurnsManager] = useState(null);
-  const [gameTurns, setGameTurns] = useState(null);
+  const [gameManager, setGameManager] = useState(null);
+  const [gameBoard, setGameBoard] = useState(null);
 
   useEffect(function initialGameStateEffect(){
     async function initializeGameState(){
@@ -41,9 +41,10 @@ function PlayGame() {
       const players = await ConnectFourServerApi.getPlayersForGame(gameId);
       console.log("retrieved players:", players);
       setGamePlayers(players);
-      const newGameTurnsManager = new GameTurnsManager(gameId, setGameTurns);
-      setGameTurnsManager(newGameTurnsManager);
-      console.log("gameTurnsManager created and set in state:", newGameTurnsManager);
+      const newGameManager = new GameManager(game, setGameBoard);
+      setGameManager(newGameManager);
+      setGameBoard(newGameManager.board);
+      console.log("gameManager created and set in state:", newGameManager);
       setIsLoading(false);
     }
     console.log("fetchGameAndPlayerEffect() called; component re-mounted or gameId changed");
@@ -53,7 +54,7 @@ function PlayGame() {
   async function startGame() {
     console.log("startGame() called");
     await ConnectFourServerApi.startGame(gameId);
-    gameTurnsManager.enablePolling();
+    gameManager.enablePolling();
   }
 
   async function deleteGame() {
@@ -76,12 +77,12 @@ function PlayGame() {
 
   /** For debug purposes only */
   async function stopPolling() {
-    gameTurnsManager.disablePolling();
+    gameManager.disablePolling();
   }
 
   if (isLoading) return <div><p>Loading...</p></div>
 
-  if (game.gameState > 1) { gameTurnsManager.disablePolling(); }
+  if (game.gameState > 1) { gameManager.disablePolling(); }
 
   return (
     <div className="PlayGame">
@@ -106,7 +107,7 @@ function PlayGame() {
         </button>
       </div>
       <GameBoard
-        boardState={game.boardData}
+        boardState={gameBoard}
         gamePlayers={gamePlayers}
         dropPiece={dropPiece}>
       </GameBoard>
