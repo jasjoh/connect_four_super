@@ -8,9 +8,10 @@ const renderTurnsDelayInMs = 1000;
 export class GameManager {
 
   constructor(game, setBoard) {
+    this.clientTurns = [];
     this.board = this.initializeClientBoard(game.boardData);
     console.log("GameManager.board initialized on construction:", this.board);
-    this.gameId = game.gameId;
+    this.gameId = game.id;
     this.setBoard = setBoard;
     this.pollForTurns = false;
   }
@@ -21,8 +22,11 @@ export class GameManager {
   async updateBoard() {
     console.log("GameManager.updateBoard() called");
     const newTurns = await this.getNewTurns();
+    console.log("newTurns:", newTurns);
     for (let turn of newTurns) {
-      console.log("updating board with new turn");
+      console.log("updating client turn array and board with new turn");
+      this.clientTurns.push(turn);
+      console.log("clientTurns updated with new turn:", this.clientTurns);
       this.updateBoardWithTurn(turn);
       console.log("board updated with new turn:", this.board);
       this.setBoard(this.board); // call callback to re-render

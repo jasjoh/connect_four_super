@@ -5,6 +5,7 @@ import BoardDropRow from "./BoardDropRow";
 /** Displays the game board containing multiple cells
  *
  * Props:
+ *  - gameState: the state of the game ( to enable / disable dropping )
  *  - boardState: The active game's state [ [ { playerId, highlight } ] ]
  *  --- the winning set of game pieces (if they exist)
  * - gamePlayers: A list of player objects { ai, color, createdOn, id, name, playOrder }
@@ -14,7 +15,7 @@ import BoardDropRow from "./BoardDropRow";
  *  - None
  *
  * Main -> GameBoard -> [ BoardDropRow, BoardPlayRow ] */
-function GameBoard({ boardState, gamePlayers, dropPiece }) {
+function GameBoard({ gameState, boardState, gamePlayers, dropPiece }) {
   console.log("GameBoard re-rendered");
   console.log("called w/ boardState:", boardState);
   /**
@@ -25,6 +26,10 @@ function GameBoard({ boardState, gamePlayers, dropPiece }) {
    * - its row state (an array of either null or player ID values)
    * */
 
+  if (gameState !== 1) {
+    dropPiece = () => console.log("dropPiece called while game not started");
+  }
+
   // Build array of BoardPlayRows
   let boardPlayRowsJsx = boardState.map( (row, index) => {
     // console.log("new play row being added for row, index:", row, index);
@@ -34,7 +39,10 @@ function GameBoard({ boardState, gamePlayers, dropPiece }) {
   return (
     <div className="GameBoard">
       <table className="GameBoard-board"><tbody>
-        <BoardDropRow width={ boardState[0].length } dropPiece={ dropPiece }/>
+        <BoardDropRow
+          width={ boardState[0].length }
+          dropPiece={ dropPiece }
+        />
         { boardPlayRowsJsx.map( row => row ) }
       </tbody></table>
     </div>

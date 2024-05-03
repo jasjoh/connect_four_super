@@ -107,6 +107,7 @@ function PlayGame() {
         </button>
       </div>
       <GameBoard
+        gameState={game.gameState}
         boardState={gameBoard}
         gamePlayers={gamePlayers}
         dropPiece={dropPiece}>
