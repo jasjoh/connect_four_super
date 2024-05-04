@@ -22,7 +22,7 @@ import GameBoard from "./GameBoardComponents/GameBoard.js";
  * /games/{gameId} -> PlayGame -> GameBoard
  */
 function PlayGame() {
-  // console.log("PlayGame re-rendered");
+  console.log("PlayGame re-rendered");
 
   const { gameId } = useParams();
   const navigate = useNavigate();
@@ -82,6 +82,7 @@ function PlayGame() {
 
   if (isLoading) return <div><p>Loading...</p></div>
 
+  if (game.gameState === 1) { gameManager.enablePolling(); }
   if (game.gameState > 1) { gameManager.disablePolling(); }
 
   return (

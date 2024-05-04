@@ -13,6 +13,7 @@ export class GameManager {
     console.log("GameManager.board initialized on construction:", this.board);
     this.gameId = game.id;
     this.setBoard = setBoard;
+    this.isPolling = false;
     this.pollForTurns = false;
   }
 
@@ -83,11 +84,15 @@ export class GameManager {
   /** Enables polling and initiates polling (via this.poll()) */
   enablePolling() {
     this.pollForTurns = true;
-    this.poll();
+    if (!this.isPolling) {
+      this.isPolling = true;
+      this.poll();
+    }
   }
 
   /** Disables polling such that on next poll, polling will cease. */
   disablePolling() {
+    this.isPolling = false;
     this.pollForTurns = false;
   }
 
