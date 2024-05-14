@@ -27,7 +27,7 @@ import NavBar from "./NavBar.js";
     useEffect(function fetchPlayersEffect(){
       async function fetchPlayer(){
         const player = await ConnectFourServerApi.getPlayer(playerId);
-        console.log("retrieved player:", player);
+        // console.log("retrieved player:", player);
         setPlayer(player);
         setIsLoading(false);
       }

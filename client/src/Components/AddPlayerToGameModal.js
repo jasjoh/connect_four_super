@@ -17,8 +17,8 @@ import PlayerList from "./PlayerList.js";
  *
  * GameDetails -> AddPlayerToGameModal -> PlayerList */
 function AddPlayerToGameModal({isOpen, gamePlayers, closeModal, gameId, addPlayerToGame}) {
-  console.log("AddPlayerToGameModal re-rendered");
-  console.log("received gamePlayers:", gamePlayers);
+  // console.log("AddPlayerToGameModal re-rendered");
+  // console.log("received gamePlayers:", gamePlayers);
 
   const [availPlayersList, setAvailPlayerList] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,21 +26,21 @@ function AddPlayerToGameModal({isOpen, gamePlayers, closeModal, gameId, addPlaye
   useEffect(function fetchAndFilterPlayerListOnMount(){
     if (isOpen) {
       async function fetchAndFilterPlayerListings(){
-        console.log("fetchPlayerListOnMount() called thus component is being re-mounted");
+        // console.log("fetchPlayerListOnMount() called thus component is being re-mounted");
         const playerList = await ConnectFourServerApi.getPlayers();
-        console.log("retrieved playerList:", playerList);
-        console.log("performing player filter");
+        // console.log("retrieved playerList:", playerList);
+        // console.log("performing player filter");
         const availPlayers = playerList.filter(p => {
-          console.log(`evaluating player: ${p.id} from the list of all players.`);
+          // console.log(`evaluating player: ${p.id} from the list of all players.`);
           const matchedPlayers = gamePlayers.find(gp =>
             {
-              console.log(`comparing player in game ${gp.id} and seeing if it matches that player: ${p.id}`)
+              // console.log(`comparing player in game ${gp.id} and seeing if it matches that player: ${p.id}`)
               return gp.id === p.id;
             })
-          console.log("matched players:", matchedPlayers);
+          // console.log("matched players:", matchedPlayers);
           return matchedPlayers === undefined;
         })
-        console.log("available players determined to be:", availPlayers);
+        // console.log("available players determined to be:", availPlayers);
         setAvailPlayerList(availPlayers);
         setIsLoading(false);
       }

@@ -23,7 +23,6 @@ import GameBoard from "./GameBoardComponents/GameBoard.js";
  */
 function PlayGame() {
   console.log("PlayGame re-rendered");
-
   const { gameId } = useParams();
   const navigate = useNavigate();
 
@@ -32,44 +31,54 @@ function PlayGame() {
   const [isLoading, setIsLoading] = useState(true);
   const [gameManager, setGameManager] = useState(null);
   const [gameBoard, setGameBoard] = useState(null);
+  const [renderToggle, setRenderToggle] = useState(false);
 
   useEffect(function initialGameStateEffect(){
     async function initializeGameState(){
       const game = await ConnectFourServerApi.getGame(gameId);
-      console.log("retrieved game:", game);
+      // console.log("retrieved game:", game);
       setGame(game);
       const players = await ConnectFourServerApi.getPlayersForGame(gameId);
-      console.log("retrieved players:", players);
+      // console.log("retrieved players:", players);
       setGamePlayers(players);
-      const newGameManager = new GameManager(game, setGameBoard);
+      const newGameManager = new GameManager(game, updateGameBoard);
       setGameManager(newGameManager);
       setGameBoard(newGameManager.board);
-      console.log("gameManager created and set in state:", newGameManager);
+      // console.log("gameManager created and set in state:", newGameManager);
       setIsLoading(false);
     }
     console.log("fetchGameAndPlayerEffect() called; component re-mounted or gameId changed");
     initializeGameState();
-  }, [gameId])
+  }, [gameId]);
+
+  console.log("renderToggle:", renderToggle);
+
+  function updateGameBoard(board) {
+    console.log("PlayGame.updateGameBoard() called with board:", board);
+    setRenderToggle(
+      prevValue => { return !prevValue; }
+    );
+  }
 
   async function startGame() {
-    console.log("startGame() called");
+    // console.log("startGame() called");
     await ConnectFourServerApi.startGame(gameId);
     gameManager.enablePolling();
   }
 
   async function deleteGame() {
-    console.log("deleteGame() called");
+    // console.log("deleteGame() called");
     await ConnectFourServerApi.deleteGame(gameId);
     navigate(`/`);
   }
 
   async function managePlayers() {
-    console.log("managePlayers() called");
+    // console.log("managePlayers() called");
     navigate(`/games/${game.id}`);
   }
 
   async function dropPiece(colIndex) {
-    console.log("dropPiece() called with colIndex:", colIndex);
+    // console.log("dropPiece() called with colIndex:", colIndex);
     await ConnectFourServerApi.dropPiece(game.id, game.currPlayerId, colIndex);
     const updatedGame = await ConnectFourServerApi.getGame(game.id);
     setGame(updatedGame);

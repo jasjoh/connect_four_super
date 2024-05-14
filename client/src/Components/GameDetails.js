@@ -35,38 +35,38 @@ import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
     useEffect(function fetchGameAndPlayersEffect(){
       async function fetchGameAndPlayers(){
         const game = await ConnectFourServerApi.getGame(gameId);
-        console.log("retrieved game:", game);
+        // console.log("retrieved game:", game);
         setGame(game);
         const players = await ConnectFourServerApi.getPlayersForGame(gameId);
-        console.log("retrieved players:", players);
+        // console.log("retrieved players:", players);
         setGamePlayers(players);
         setIsLoading(false);
       }
-      console.log("fetchGameAndPlayerEffect() called; component re-mounted or gameId changed");
+      // console.log("fetchGameAndPlayerEffect() called; component re-mounted or gameId changed");
       fetchGameAndPlayers();
     }, [gameId])
 
     async function removePlayer(playerId) {
-      console.log("removePlayer() called for player ID:", playerId);
+      // console.log("removePlayer() called for player ID:", playerId);
       await ConnectFourServerApi.removePlayerFromGame(gameId, playerId);
       const updatedGamePlayers = await ConnectFourServerApi.getPlayersForGame(gameId);
       setGamePlayers(updatedGamePlayers);
     }
 
     async function addPlayerToGame(playerId) {
-      console.log("addPlayerToGame() called for player ID:", playerId);
+      // console.log("addPlayerToGame() called for player ID:", playerId);
       await ConnectFourServerApi.addPlayersToGame(gameId, [playerId]);
       const updatedGamePlayers = await ConnectFourServerApi.getPlayersForGame(gameId);
       setGamePlayers(updatedGamePlayers);
     }
 
     async function playGame() {
-      console.log("playGame() called");
+      // console.log("playGame() called");
       navigate(`/games/${game.id}/play`);
     }
 
     async function deleteGame() {
-      console.log("deleteGame() called");
+      // console.log("deleteGame() called");
       await ConnectFourServerApi.deleteGame(gameId);
       navigate(`/`);
     }

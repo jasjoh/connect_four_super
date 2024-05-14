@@ -42,7 +42,7 @@ function GameCreateForm({ createGame }) {
   }
 
   function handleSubmit(evt) {
-    console.log("handleSubmit called");
+    // console.log("handleSubmit called");
     evt.preventDefault();
     createGame(formData);
   }

@@ -28,7 +28,7 @@ function GameListing({ game }) {
     const navigate = useNavigate();
 
     function gameClick(evt) {
-      console.log("Game row clicked. Navigating to:", `/games/${game.id}`);
+      // console.log("Game row clicked. Navigating to:", `/games/${game.id}`);
       navigate(`/games/${game.id}`);
     }
 

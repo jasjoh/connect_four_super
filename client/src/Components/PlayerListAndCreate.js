@@ -23,9 +23,9 @@ function PlayerListAndCreate() {
 
   useEffect(function fetchPlayerListOnMount(){
     async function fetchPlayerListings(){
-      console.log("fetchPlayerListOnMount() called thus component is being re-mounted");
+      // console.log("fetchPlayerListOnMount() called thus component is being re-mounted");
       const playerList = await ConnectFourServerApi.getPlayers();
-      console.log("retrieved playerList:", playerList);
+      // console.log("retrieved playerList:", playerList);
       setPlayerList(playerList);
       setIsLoading(false);
     }
@@ -33,14 +33,14 @@ function PlayerListAndCreate() {
   }, [])
 
   async function createPlayer(formData) {
-    console.log("PlayerList createPlayer() form called with:", formData);
+    // console.log("PlayerList createPlayer() form called with:", formData);
     await ConnectFourServerApi.createPlayer(formData);
     const updatedPlayerList = await ConnectFourServerApi.getPlayers();
     setPlayerList(updatedPlayerList);
   }
 
   async function deletePlayer(formData) {
-    console.log("PlayerList deletePlayer() form called with:", formData);
+    // console.log("PlayerList deletePlayer() form called with:", formData);
     await ConnectFourServerApi.deletePlayer(formData);
     const updatedPlayerList = await ConnectFourServerApi.getPlayers();
     setPlayerList(updatedPlayerList);

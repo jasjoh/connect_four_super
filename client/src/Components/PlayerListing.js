@@ -39,7 +39,7 @@ import "./PlayerListing.css";
     }
 
     function buttonClick(evt) {
-      console.log(`action button clicked; calling provided action callback`);
+      // console.log(`action button clicked; calling provided action callback`);
       action(player.id);
     }
 

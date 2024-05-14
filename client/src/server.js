@@ -41,42 +41,42 @@ class ConnectFourServerApi {
   /** Get a list of all games */
   static async getGames() {
     const data = await ConnectFourServerApi.request(`games`);
-    console.log("retrieved games:", data);
+    // console.log("retrieved games:", data);
     return data.games;
   }
 
   /** Get a specific game */
   static async getGame(gameId) {
     const data = await ConnectFourServerApi.request(`games/${gameId}`, );
-    console.log("retrieved game:", data);
+    // console.log("retrieved game:", data);
     return data.game;
   }
 
   /** Get all players */
   static async getPlayers() {
     const data = await ConnectFourServerApi.request(`players`, );
-    console.log("retrieved players:", data.players);
+    // console.log("retrieved players:", data.players);
     return data.players;
   }
 
   /** Get a specific player */
   static async getPlayer(pId) {
     const data = await ConnectFourServerApi.request(`players/${pId}`, );
-    console.log("retrieved player:", data);
+    // console.log("retrieved player:", data);
     return data.player;
   }
 
   /** Get all players for a specific game */
   static async getPlayersForGame(gameId) {
     const data = await ConnectFourServerApi.request(`games/${gameId}/players`, );
-    console.log("retrieved players:", data);
+    // console.log("retrieved players:", data);
     return data.players;
   }
 
   /** Get all turns for a specific game */
   static async getTurnsForGame(gameId) {
     const data = await ConnectFourServerApi.request(`games/${gameId}/turns`, );
-    console.log("retrieved turns:", data);
+    // console.log("retrieved turns:", data);
     return data.turns;
   }
 
@@ -86,7 +86,7 @@ class ConnectFourServerApi {
    */
   static async createPlayer(player) {
     const data = await ConnectFourServerApi.request(`players`, player, 'POST' );
-    console.log("created player:", data);
+    // console.log("created player:", data);
     return data.player;
   }
 
@@ -97,7 +97,7 @@ class ConnectFourServerApi {
    */
   static async createGame(dimensions) {
     const data = await ConnectFourServerApi.request(`games`, dimensions, 'POST' );
-    console.log("created game:", data);
+    // console.log("created game:", data);
     return data.game;
   }
 
@@ -105,7 +105,7 @@ class ConnectFourServerApi {
    * Returns the started / restarted game */
   static async startGame(gameId) {
     const data = await ConnectFourServerApi.request(`games/${gameId}/start`, {}, 'POST' );
-    console.log("started game:", data);
+    // console.log("started game:", data);
     return data.game;
   }
 
@@ -116,7 +116,7 @@ class ConnectFourServerApi {
     const data = await ConnectFourServerApi.request(
       `games/${gameId}/cols/${col}`, { playerId: playerId }, 'POST'
     );
-    console.log("drop piece response:", data);
+    // console.log("drop piece response:", data);
     return undefined;
   }
 
@@ -126,7 +126,7 @@ class ConnectFourServerApi {
    */
   static async addPlayersToGame(gameId, players) {
     const data = await ConnectFourServerApi.request(`games/${gameId}/players`, players, 'POST' );
-    console.log("updated player count:", data);
+    // console.log("updated player count:", data);
     return data;
   }
 
@@ -134,7 +134,7 @@ class ConnectFourServerApi {
    * Returns undefined if successful and throws error otherwise */
   static async deletePlayer(playerId) {
     const data = await ConnectFourServerApi.request(`players/${playerId}`, {}, 'DELETE' );
-    console.log("player delete response:", data);
+    // console.log("player delete response:", data);
     return undefined;
   }
 
@@ -142,7 +142,7 @@ class ConnectFourServerApi {
    * Returns undefined if successful and throws error otherwise */
   static async removePlayerFromGame(gameId, playerId) {
     const data = await ConnectFourServerApi.request(`games/${gameId}/players/${playerId}`, {}, 'DELETE' );
-    console.log("removed player response:", data);
+    // console.log("removed player response:", data);
     return undefined;
   }
 

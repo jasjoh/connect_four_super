@@ -2,7 +2,7 @@ import { delay } from "./utils";
 import ConnectFourServerApi from "./server";
 
 const updateTurnsDelayInMs = 500;
-const renderTurnsDelayInMs = 1000;
+const renderTurnsDelayInMs = 5000;
 
 /** Provides functionality for managing the board state associated with a game */
 export class GameManager {
@@ -10,7 +10,7 @@ export class GameManager {
   constructor(game, setBoard) {
     this.clientTurns = [];
     this.board = this.initializeClientBoard(game.boardData);
-    console.log("GameManager.board initialized on construction:", this.board);
+    // console.log("GameManager.board initialized on construction:", this.board);
     this.gameId = game.id;
     this.setBoard = setBoard;
     this.isPolling = false;
@@ -21,15 +21,15 @@ export class GameManager {
    * to update React state for PlayGame
    */
   async updateBoard() {
-    console.log("GameManager.updateBoard() called");
+    // console.log("GameManager.updateBoard() called");
     const newTurns = await this.getNewTurns();
-    console.log("newTurns:", newTurns);
+    // console.log("newTurns:", newTurns);
     for (let turn of newTurns) {
-      console.log("updating client turn array and board with new turn");
+      // console.log("updating client turn array and board with new turn");
       this.clientTurns.push(turn);
-      console.log("clientTurns updated with new turn:", this.clientTurns);
+      // console.log("clientTurns updated with new turn:", this.clientTurns);
       this.updateBoardWithTurn(turn);
-      console.log("board updated with new turn:", this.board);
+      // console.log("board updated with new turn:", this.board);
       this.setBoard(this.board); // call callback to re-render
       await delay(renderTurnsDelayInMs);
     }
@@ -40,15 +40,15 @@ export class GameManager {
    * not found in the client turns list.
    */
   async getNewTurns() {
-    console.log("getNewTurns() called");
+    // console.log("getNewTurns() called");
     const serverTurns = await ConnectFourServerApi.getTurnsForGame(this.gameId);
-    console.log(`server turns retrieved:`, serverTurns);
+    // console.log(`server turns retrieved:`, serverTurns);
     const newTurnCount = serverTurns.length - this.clientTurns.length;
-    console.log("newTurnCount calculated as:", newTurnCount);
+    // console.log("newTurnCount calculated as:", newTurnCount);
     const newTurns = [];
     let turnsAdded = 0;
     while (turnsAdded < newTurnCount) {
-      console.log("adding a new turn");
+      // console.log("adding a new turn");
       turnsAdded++;
       newTurns.unshift(serverTurns[serverTurns.length - turnsAdded]);
     }
@@ -59,13 +59,13 @@ export class GameManager {
    * boardData: [ [ { playerId, validCoordSets } ] ]
   */
   initializeClientBoard(boardData) {
-    console.log("initializeClientBoard called with boardData:", boardData);
+    // console.log("initializeClientBoard called with boardData:", boardData);
     const board = [];
     for (let row of boardData) {
       const clientRow = [];
       for (let col of row) {
         const tileState = {
-          playerId: col.playerId,
+          playerId: null,
           highlight: false
         }
         clientRow.push(tileState);

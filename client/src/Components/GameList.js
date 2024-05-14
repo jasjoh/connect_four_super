@@ -23,9 +23,9 @@ function GameList() {
 
   useEffect(function fetchGameListOnMount(){
     async function fetchGameListings(){
-      console.log("fetchGameListOnMount() called thus component is being re-mounted");
+      // console.log("fetchGameListOnMount() called thus component is being re-mounted");
       const gameList = await ConnectFourServerApi.getGames();
-      console.log("retrieved gameList:", gameList);
+      // console.log("retrieved gameList:", gameList);
       setGameList(gameList);
       setIsLoading(false);
     }
@@ -33,7 +33,7 @@ function GameList() {
   }, [])
 
   async function createGame(formData) {
-    console.log("GameList createGame() form called with:", formData);
+    // console.log("GameList createGame() form called with:", formData);
     await ConnectFourServerApi.createGame(formData);
     const updatedGameList = await ConnectFourServerApi.getGames();
     setGameList(updatedGameList);
