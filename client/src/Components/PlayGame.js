@@ -26,62 +26,49 @@ function PlayGame() {
   const { gameId } = useParams();
   const navigate = useNavigate();
 
-  const [game, setGame] = useState(null);
-  const [gamePlayers, setGamePlayers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [gameManager, setGameManager] = useState(null);
-  const [gameBoard, setGameBoard] = useState(null);
   const [renderToggle, setRenderToggle] = useState(false);
 
-  useEffect(function initialGameStateEffect(){
-    async function initializeGameState(){
-      const game = await ConnectFourServerApi.getGame(gameId);
-      // console.log("retrieved game:", game);
-      setGame(game);
-      const players = await ConnectFourServerApi.getPlayersForGame(gameId);
-      // console.log("retrieved players:", players);
-      setGamePlayers(players);
-      const newGameManager = new GameManager(game, updateGameBoard);
+  useEffect(function initializeGameManagerEffect(){
+    async function initializeGameManager(){
+      const newGameManager = new GameManager(gameId, forceReRender);
       setGameManager(newGameManager);
-      setGameBoard(newGameManager.board);
-      // console.log("gameManager created and set in state:", newGameManager);
       setIsLoading(false);
     }
-    console.log("fetchGameAndPlayerEffect() called; component re-mounted or gameId changed");
-    initializeGameState();
+    console.log("initializeGameManagerFetch() called; component re-mounted or gameId changed");
+    initializeGameManager();
   }, [gameId]);
 
-  console.log("renderToggle:", renderToggle);
-
-  function updateGameBoard(board) {
-    console.log("PlayGame.updateGameBoard() called with board:", board);
-    setRenderToggle(
-      prevValue => { return !prevValue; }
-    );
+  /** Used by the game manager as a callback function to force re-render when game state is updated  */
+  function forceReRender() {
+    console.log("PlayGame.forceReRender() called");
+    setRenderToggle( prevValue => { return !prevValue; } );
   }
 
+  /** Called when a user clicks on the start or re-start button */
   async function startGame() {
     // console.log("startGame() called");
-    await ConnectFourServerApi.startGame(gameId);
-    gameManager.enablePolling();
+    await gameManager.startGame();
   }
 
+  /** Called when a user clicks the button to delete the current game */
   async function deleteGame() {
     // console.log("deleteGame() called");
-    await ConnectFourServerApi.deleteGame(gameId);
+    await gameManager.deleteGame();
     navigate(`/`);
   }
 
+  /** Called when a user clicks the button to manage the players in a game */
   async function managePlayers() {
     // console.log("managePlayers() called");
-    navigate(`/games/${game.id}`);
+    navigate(`/games/${gameId}`);
   }
 
+  /** Called when a user drops a piece in a drop row */
   async function dropPiece(colIndex) {
     // console.log("dropPiece() called with colIndex:", colIndex);
-    await ConnectFourServerApi.dropPiece(game.id, game.currPlayerId, colIndex);
-    const updatedGame = await ConnectFourServerApi.getGame(game.id);
-    setGame(updatedGame);
+    await gameManager.dropPiece(colIndex);
   }
 
   /** For debug purposes only */
@@ -91,20 +78,17 @@ function PlayGame() {
 
   if (isLoading) return <div><p>Loading...</p></div>
 
-  if (game.gameState === 1) { gameManager.enablePolling(); }
-  if (game.gameState > 1) { gameManager.disablePolling(); }
-
   return (
     <div className="PlayGame">
       <div className="PlayGame-summary">
         <div>Game ID: {gameId}</div>
-        <div>Game State: {gameStates[game.gameState]}</div>
+        <div>Game State: {gameStates[gameManager.gameState]}</div>
       </div>
       <div className="PlayGame-players-title">Players</div>
-      <PlayerList playerList={gamePlayers} />
+      <PlayerList playerList={gameManager.players} />
       <div className="PlayGame-manageButtons">
         <button className="PlayGame-manageButtons-button" onClick={startGame}>
-          {game.gameState === 0 ? 'Start' : 'Restart'}
+          {gameManager.gameState === 0 ? 'Start' : 'Restart'}
         </button>
         <button className="PlayGame-manageButtons-button" onClick={deleteGame}>
           Delete
@@ -117,9 +101,9 @@ function PlayGame() {
         </button>
       </div>
       <GameBoard
-        gameState={game.gameState}
-        boardState={gameBoard}
-        gamePlayers={gamePlayers}
+        gameState={gameManager.gameState}
+        boardState={gameManager.board}
+        gamePlayers={gameManager.gamePlayers}
         dropPiece={dropPiece}>
       </GameBoard>
     </div>

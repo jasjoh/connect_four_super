@@ -2,19 +2,25 @@ import { delay } from "./utils";
 import ConnectFourServerApi from "./server";
 
 const updateTurnsDelayInMs = 500;
-const renderTurnsDelayInMs = 5000;
+const renderTurnsDelayInMs = 1000;
 
 /** Provides functionality for managing the board state associated with a game */
 export class GameManager {
 
-  constructor(game, setBoard) {
+  constructor(gameId, forceReRender) {
     this.clientTurns = [];
-    this.board = this.initializeClientBoard(game.boardData);
-    // console.log("GameManager.board initialized on construction:", this.board);
-    this.gameId = game.id;
-    this.setBoard = setBoard;
+    this.gameId = gameId;
+    this.forceReRender = forceReRender;
     this.isPolling = false;
     this.pollForTurns = false;
+  }
+
+  // called to asynchronously initialize the game manager using server state
+  async initialize() {
+    this.game = await ConnectFourServerApi.getGame(this.gameId);
+    this.gameState = this.game.gameState;
+    this.board = this.initializeClientBoard(this.game.boardData);
+    this.players = await ConnectFourServerApi.getPlayersForGame(this.gameId);
   }
 
   /** Internal conductor function to update board state and call callback function
@@ -32,6 +38,13 @@ export class GameManager {
       // console.log("board updated with new turn:", this.board);
       this.setBoard(this.board); // call callback to re-render
       await delay(renderTurnsDelayInMs);
+    }
+    if (newTurns.length > 0) {
+      this.game = await ConnectFourServerApi.getGame(this.gameId);
+      this.gameState = this.game.gameState;
+      if (this.gameState > 1) {
+        this.disablePolling();
+      }
     }
   }
 
@@ -79,6 +92,23 @@ export class GameManager {
    * { turnId, location, playerId, gameId, createdOnMs } */
   updateBoardWithTurn(turn) {
     this.board[turn.location[0]][turn.location[1]].playerId = turn.playerId;
+  }
+
+  /** Drops a piece at the specified column for the current player associated with
+   * the game associated with this game manager
+   */
+  async dropPiece(column) {
+    await ConnectFourServerApi.dropPiece(this.gameId, this.currPlayerId, column);
+  }
+
+  /** Starts (or re-starts) the game associated with this game manager */
+  async startGame() {
+    await ConnectFourServerApi.startGame(this.gameId);
+  }
+
+  /** Deletes the game associated with this game manager */
+  async deleteGame() {
+    await ConnectFourServerApi.deleteGame(this.gameId);
   }
 
   /** Enables polling and initiates polling (via this.poll()) */
