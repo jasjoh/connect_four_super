@@ -8,26 +8,42 @@ const renderTurnsDelayInMs = 1000;
 export class GameManager {
 
   constructor(gameId, forceReRender) {
-    this.clientTurns = [];
     this.gameId = gameId;
     this.forceReRender = forceReRender;
+
+    this.clientTurns = [];
     this.isPolling = false;
     this.pollForTurns = false;
+
+    this.game = undefined;
+    this.board = undefined;
+    this.gameState = undefined;
+    this.players = undefined;
+    this.currPlayerId = undefined;
   }
 
   // called to asynchronously initialize the game manager using server state
   async initialize() {
-    this.game = await ConnectFourServerApi.getGame(this.gameId);
-    this.gameState = this.game.gameState;
-    this.board = this.initializeClientBoard(this.game.boardData);
+    await this.updateLocalGame();
+    this.board = this.initializeClientBoard();
     this.players = await ConnectFourServerApi.getPlayersForGame(this.gameId);
+    if (this.gameState === 1) {
+      this.enablePolling();
+    }
   }
 
-  /** Internal conductor function to update board state and call callback function
-   * to update React state for PlayGame
+  // called to fetch an updated version of the game and populate local state
+  async updateLocalGame() {
+    this.game = await ConnectFourServerApi.getGame(this.gameId);
+    this.gameState = this.game.gameState;
+    this.currPlayerId = this.game.currPlayerId;
+  }
+
+  /** Internal conductor function to handle all operations that take place during
+   * a polling sessions including any callbacks to React to re-render if needed
    */
-  async updateBoard() {
-    // console.log("GameManager.updateBoard() called");
+  async pollingConductor() {
+    // console.log("GameManager.pollingConductor() called");
     const newTurns = await this.getNewTurns();
     // console.log("newTurns:", newTurns);
     for (let turn of newTurns) {
@@ -36,12 +52,11 @@ export class GameManager {
       // console.log("clientTurns updated with new turn:", this.clientTurns);
       this.updateBoardWithTurn(turn);
       // console.log("board updated with new turn:", this.board);
-      this.setBoard(this.board); // call callback to re-render
+      this.forceReRender(); // call callback to re-render
       await delay(renderTurnsDelayInMs);
     }
     if (newTurns.length > 0) {
-      this.game = await ConnectFourServerApi.getGame(this.gameId);
-      this.gameState = this.game.gameState;
+      await this.updateLocalGame();
       if (this.gameState > 1) {
         this.disablePolling();
       }
@@ -71,10 +86,10 @@ export class GameManager {
   /** Initializes the client-side representation of the game board on construction
    * boardData: [ [ { playerId, validCoordSets } ] ]
   */
-  initializeClientBoard(boardData) {
+  initializeClientBoard() {
     // console.log("initializeClientBoard called with boardData:", boardData);
     const board = [];
-    for (let row of boardData) {
+    for (let row of this.game.boardData) {
       const clientRow = [];
       for (let col of row) {
         const tileState = {
@@ -99,15 +114,18 @@ export class GameManager {
    */
   async dropPiece(column) {
     await ConnectFourServerApi.dropPiece(this.gameId, this.currPlayerId, column);
+    await this.pollingConductor();
   }
 
   /** Starts (or re-starts) the game associated with this game manager */
   async startGame() {
     await ConnectFourServerApi.startGame(this.gameId);
+    this.enablePolling();
   }
 
   /** Deletes the game associated with this game manager */
   async deleteGame() {
+    this.disablePolling();
     await ConnectFourServerApi.deleteGame(this.gameId);
   }
 
@@ -131,7 +149,7 @@ export class GameManager {
    */
   async poll() {
     while (this.pollForTurns) {
-      await this.updateBoard();
+      await this.pollingConductor();
       await delay(updateTurnsDelayInMs);
     }
   }

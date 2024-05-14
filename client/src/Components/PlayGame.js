@@ -1,4 +1,3 @@
-import ConnectFourServerApi from "../server";
 import { GameManager } from "../gameManager.js";
 import { gameStates } from "../utils.js";
 
@@ -33,6 +32,7 @@ function PlayGame() {
   useEffect(function initializeGameManagerEffect(){
     async function initializeGameManager(){
       const newGameManager = new GameManager(gameId, forceReRender);
+      await newGameManager.initialize();
       setGameManager(newGameManager);
       setIsLoading(false);
     }
@@ -103,7 +103,7 @@ function PlayGame() {
       <GameBoard
         gameState={gameManager.gameState}
         boardState={gameManager.board}
-        gamePlayers={gameManager.gamePlayers}
+        gamePlayers={gameManager.players}
         dropPiece={dropPiece}>
       </GameBoard>
     </div>
