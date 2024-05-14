@@ -15,7 +15,7 @@ class ConnectFourServerApi {
    * @param {string} method - the method associated with the request
    */
   static async request(endpoint, data = {}, method = "get") {
-    console.debug("API Call:", endpoint, data, method);
+    // console.debug("API Call:", endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
     // const headers = { Authorization: `Bearer ${ShareBnbApi.token}` };
@@ -113,10 +113,9 @@ class ConnectFourServerApi {
    * Expects: gameId, playerId, col
    * Returns undefined if successful and throws error otherwise */
   static async dropPiece(gameId, playerId, col) {
-    const data = await ConnectFourServerApi.request(
+    await ConnectFourServerApi.request(
       `games/${gameId}/cols/${col}`, { playerId: playerId }, 'POST'
     );
-    // console.log("drop piece response:", data);
     return undefined;
   }
 

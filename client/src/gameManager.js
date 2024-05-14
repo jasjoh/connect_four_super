@@ -11,10 +11,10 @@ export class GameManager {
     this.gameId = gameId;
     this.forceReRender = forceReRender;
 
-    this.clientTurns = [];
     this.isPolling = false;
     this.pollForTurns = false;
 
+    this.clientTurns = undefined;
     this.game = undefined;
     this.board = undefined;
     this.gameState = undefined;
@@ -26,6 +26,7 @@ export class GameManager {
   async initialize() {
     await this.updateLocalGame();
     this.board = this.initializeClientBoard();
+    this.clientTurns = await ConnectFourServerApi.getTurnsForGame(this.gameId);
     this.players = await ConnectFourServerApi.getPlayersForGame(this.gameId);
     if (this.gameState === 1) {
       this.enablePolling();
@@ -42,8 +43,8 @@ export class GameManager {
   /** Internal conductor function to handle all operations that take place during
    * a polling sessions including any callbacks to React to re-render if needed
    */
-  async pollingConductor() {
-    // console.log("GameManager.pollingConductor() called");
+  async conductPoll() {
+    // console.log("GameManager.conductPoll() called");
     const newTurns = await this.getNewTurns();
     // console.log("newTurns:", newTurns);
     for (let turn of newTurns) {
@@ -93,7 +94,7 @@ export class GameManager {
       const clientRow = [];
       for (let col of row) {
         const tileState = {
-          playerId: null,
+          playerId: col.playerId,
           highlight: false
         }
         clientRow.push(tileState);
@@ -114,13 +115,14 @@ export class GameManager {
    */
   async dropPiece(column) {
     await ConnectFourServerApi.dropPiece(this.gameId, this.currPlayerId, column);
-    await this.pollingConductor();
+    await this.conductPoll();
   }
 
   /** Starts (or re-starts) the game associated with this game manager */
   async startGame() {
     await ConnectFourServerApi.startGame(this.gameId);
-    this.enablePolling();
+    await this.initialize();
+    this.forceReRender();
   }
 
   /** Deletes the game associated with this game manager */
@@ -149,7 +151,7 @@ export class GameManager {
    */
   async poll() {
     while (this.pollForTurns) {
-      await this.pollingConductor();
+      await this.conductPoll();
       await delay(updateTurnsDelayInMs);
     }
   }
