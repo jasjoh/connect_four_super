@@ -62,7 +62,7 @@ import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
 
     async function playGame() {
       // console.log("playGame() called");
-      navigate(`/games/${game.id}/play`);
+      navigate(`/games/${gameId}/play`);
     }
 
     async function deleteGame() {
@@ -90,7 +90,7 @@ import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
           <button onClick={playGame} className="GameDetails-gameDetails-button">Play</button>
           <button onClick={deleteGame} className="GameDetails-gameDetails-button">Delete</button>
           <div>Game ID: {gameId}</div>
-          <div>Game State: {gameStates[game.gameState]}</div>
+          <div>Game State: {gameStates[game.gameData.gameState]}</div>
         </div>
         <div className="GameDetails-gamePlayers">
           <span className="GameDetails-gamePlayers-title">Game Players</span>
