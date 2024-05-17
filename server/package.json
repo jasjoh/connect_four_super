@@ -12,7 +12,8 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "live": "npx tsc && npm run start"
   },
   "name": "connect_four_express",
   "description": "Goal: Transition the Game model and logic from the client to the server",
