@@ -378,6 +378,7 @@ class Game {
     const gamePlayers = await Game.getPlayers(gameId);
 
     // initialize the game and start the first turn if directed to
+    await _resetGameData();
     await Board.reset(game.boardId);
     await Turn.deleteAll(gameId);
 
@@ -412,6 +413,16 @@ class Game {
       await db.query(sqlQuery, [gameId]);
       console.log("play order set in game_players");
       return;
+    }
+
+    async function _resetGameData(): Promise<undefined> {
+      await db.query(`
+        UPDATE games
+        SET
+          placed_pieces = '{}',
+          winning_set = '{}'
+        WHERE id = $1
+      `, [gameId]);
     }
   }
 
