@@ -228,11 +228,16 @@ class Game {
    * Throws NotFoundError is no matching game is found
    */
   static async getWithTurns( gameId: string): Promise<GameWithTurnsInterface> {
-    await db.query('BEGIN');
-    const game = await this.get(gameId);
-    const turns = await Turn.getAll(gameId);
-    await db.query('COMMIT');
-    return { gameData: game, gameTurns: turns };
+    try {
+      await db.query('BEGIN');
+      const game = await this.get(gameId);
+      const turns = await Turn.getAll(gameId);
+      await db.query('COMMIT');
+      return { gameData: game, gameTurns: turns };
+    } catch (e) {
+      await db.query('ROLLBACK');
+      throw e;
+    }
   }
 
   /**
