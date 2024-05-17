@@ -385,7 +385,7 @@ class Game {
 
     await Game.update(gameId, { gameState: 1} );
 
-    if (nextTurn) await Game.nextTurn(gameId);
+    if (nextTurn) Game.nextTurn(gameId);
     return undefined;
 
     /**
