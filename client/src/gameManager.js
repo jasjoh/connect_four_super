@@ -15,6 +15,7 @@ export class GameManager {
     this.pollForTurns = false;
 
     this.clientTurns = undefined;
+    this.clientTurnIdsSet = undefined;
     this.game = undefined;
     this.board = undefined;
     this.gameState = undefined;
@@ -27,6 +28,7 @@ export class GameManager {
     await this.updateLocalGame();
     this.board = this.initializeClientBoard();
     this.clientTurns = await ConnectFourServerApi.getTurnsForGame(this.gameId);
+    this.clientTurnIdsSet = new Set(this.clientTurns.map(turn => turn.turnId));
     this.players = await ConnectFourServerApi.getPlayersForGame(this.gameId);
     if (this.gameState === 1) {
       this.enablePolling();
@@ -50,7 +52,8 @@ export class GameManager {
     for (let turn of newTurns) {
       // console.log("updating client turn array and board with new turn");
       this.clientTurns.push(turn);
-      // console.log("clientTurns updated with new turn:", this.clientTurns);
+      this.clientTurnIdsSet.add(turn.turnId);
+      // console.log("clientTurnsSet updated with new turn:", this.clientTurnsSet);
       this.updateBoardWithTurn(turn);
       // console.log("board updated with new turn:", this.board);
       this.forceReRender(); // call callback to re-render
@@ -64,23 +67,13 @@ export class GameManager {
     }
   }
 
-  /** Returns the set of new turns based on comparing this.clientTurns
+  /** Returns the set of new turns based on comparing this.clientTurnsSet
    * against a provided list of serverTurns and returning any server turns
    * not found in the client turns list.
    */
   async getNewTurns() {
-    // console.log("getNewTurns() called");
     const serverTurns = await ConnectFourServerApi.getTurnsForGame(this.gameId);
-    // console.log(`server turns retrieved:`, serverTurns);
-    const newTurnCount = serverTurns.length - this.clientTurns.length;
-    // console.log("newTurnCount calculated as:", newTurnCount);
-    const newTurns = [];
-    let turnsAdded = 0;
-    while (turnsAdded < newTurnCount) {
-      // console.log("adding a new turn");
-      turnsAdded++;
-      newTurns.unshift(serverTurns[serverTurns.length - turnsAdded]);
-    }
+    const newTurns = serverTurns.filter(turn => !this.clientTurnIdsSet.has(turn.turnId));
     return newTurns;
   }
 
