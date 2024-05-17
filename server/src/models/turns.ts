@@ -4,7 +4,7 @@ import { QueryResult } from "pg";
 
 import db from "../db";
 
-interface TurnInterface {
+export interface TurnInterface {
   turnId: number,
   gameId: string,
   playerId: string,

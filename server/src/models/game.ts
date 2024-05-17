@@ -16,7 +16,7 @@ import {
   BoardDataType,
   BoardDimensionsInterface
 } from "./board";
-import { Turn } from "./turns";
+import { Turn, TurnInterface } from "./turns";
 
 import { QueryResult } from "pg";
 import _ from "lodash";
@@ -63,6 +63,11 @@ interface GameInterface {
   currPlayerId: string | null;
   createdOn: Date;
   totalPlayers: number;
+}
+
+export interface GameWithTurnsInterface {
+  gameData: GameInterface;
+  gameTurns: TurnInterface[];
 }
 
 interface StartedGameInterface extends GameInterface {
@@ -213,6 +218,21 @@ class Game {
     if (!game) throw new NotFoundError(`No game with id: ${gameId}`);
 
     return game;
+  }
+
+  /**
+   * Given a game id, return data about the game and it's turns
+   *
+   * Returns { game: { game object }, turns: { turns object } }
+   *
+   * Throws NotFoundError is no matching game is found
+   */
+  static async getWithTurns( gameId: string): Promise<GameWithTurnsInterface> {
+    await db.query('BEGIN');
+    const game = await this.get(gameId);
+    const turns = await Turn.getAll(gameId);
+    await db.query('COMMIT');
+    return { gameData: game, gameTurns: turns };
   }
 
   /**

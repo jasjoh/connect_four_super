@@ -42,7 +42,7 @@ router.get("/:id/turns", async function (req: Request, res: Response) {
  * Returns a game object like { id, ai, color, name, createdOn }
  */
 router.get("/:id", async function (req: Request, res: Response) {
-  const game = await Game.get(req.params.id);
+  const game = await Game.getWithTurns(req.params.id);
   return res.json({ game });
 });
 

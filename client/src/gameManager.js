@@ -16,6 +16,7 @@ export class GameManager {
 
     this.clientTurns = undefined;
     this.clientTurnIdsSet = undefined;
+    this.latestServerTurns = undefined; // debug data to be removed
     this.game = undefined;
     this.board = undefined;
     this.gameState = undefined;
@@ -39,8 +40,8 @@ export class GameManager {
   // called to fetch an updated version of the game and populate local state
   async updateLocalGame() {
     this.game = await ConnectFourServerApi.getGame(this.gameId);
-    this.gameState = this.game.gameState;
-    this.currPlayerId = this.game.currPlayerId;
+    this.gameState = this.game.gameData.gameState;
+    this.currPlayerId = this.game.gameData.currPlayerId;
   }
 
   /** Internal conductor function to handle all operations that take place during
@@ -61,7 +62,6 @@ export class GameManager {
       await delay(renderTurnsDelayInMs);
     }
     if (newTurns.length > 0) {
-      await this.updateLocalGame();
       this.gameEnding();
     }
   }
@@ -71,8 +71,8 @@ export class GameManager {
    * not found in the client turns list.
    */
   async getNewTurns() {
-    const serverTurns = await ConnectFourServerApi.getTurnsForGame(this.gameId);
-    const newTurns = serverTurns.filter(turn => !this.clientTurnIdsSet.has(turn.turnId));
+    await this.updateLocalGame();
+    const newTurns = this.game.gameTurns.filter(turn => !this.clientTurnIdsSet.has(turn.turnId));
     return newTurns;
   }
 
@@ -82,7 +82,7 @@ export class GameManager {
   initializeClientBoard() {
     // console.log("initializeClientBoard called with boardData:", boardData);
     const board = [];
-    for (let row of this.game.boardData) {
+    for (let row of this.game.gameData.boardData) {
       const clientRow = [];
       for (let col of row) {
         const tileState = {
@@ -118,7 +118,7 @@ export class GameManager {
     }
 
     function highlightWinningCells(parent) {
-      for (let cell of parent.game.winningSet) {
+      for (let cell of parent.game.gameData.winningSet) {
         parent.board[cell[0]][cell[1]].highlight = true;
       }
     }
