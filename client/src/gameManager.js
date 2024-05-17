@@ -27,6 +27,7 @@ export class GameManager {
   async initialize() {
     await this.updateLocalGame();
     this.board = this.initializeClientBoard();
+    this.gameEnding();
     this.clientTurns = await ConnectFourServerApi.getTurnsForGame(this.gameId);
     this.clientTurnIdsSet = new Set(this.clientTurns.map(turn => turn.turnId));
     this.players = await ConnectFourServerApi.getPlayersForGame(this.gameId);
@@ -61,9 +62,7 @@ export class GameManager {
     }
     if (newTurns.length > 0) {
       await this.updateLocalGame();
-      if (this.gameState > 1) {
-        this.disablePolling();
-      }
+      this.gameEnding();
     }
   }
 
@@ -103,10 +102,36 @@ export class GameManager {
     this.board[turn.location[0]][turn.location[1]].playerId = turn.playerId;
   }
 
+  /** Checks for and handles games which are won or tied */
+  gameEnding() {
+    if (this.gameState === 2) {
+      // game is won
+      this.pollForTurns = false;
+      this.isPolling = false;
+      highlightWinningCells(this);
+      this.forceReRender(); // call callback to re-render
+    } else if (this.gameState === 3) {
+      // game is tied
+      this.pollForTurns = false;
+      this.isPolling = false;
+      this.forceReRender(); // call callback to re-render
+    }
+
+    function highlightWinningCells(parent) {
+      for (let cell of parent.game.winningSet) {
+        parent.board[cell[0]][cell[1]].highlight = true;
+      }
+    }
+  }
+
   /** Drops a piece at the specified column for the current player associated with
    * the game associated with this game manager
    */
   async dropPiece(column) {
+    if (this.gameState !== 1) {
+      console.log("WARNING: Piece dropped while game is not in STARTED state.");
+      return;
+    }
     await ConnectFourServerApi.dropPiece(this.gameId, this.currPlayerId, column);
     await this.conductPoll();
   }

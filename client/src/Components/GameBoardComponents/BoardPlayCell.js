@@ -1,4 +1,4 @@
-// import "./BoardPlayCell.css"
+import "./BoardPlayCell.css"
 import GamePiece from "./GamePiece";
 
 /** An individual cell in the game board where pieces may exist once dropped
@@ -17,7 +17,7 @@ function BoardPlayCell({ highlight=false, color=undefined}) {
   let style = {}
 
   if (highlight) {
-    style = { backgroundColor: '#c5c5c5' }
+    style = { backgroundColor: '#e0e0e0' }
   }
 
   return (
