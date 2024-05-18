@@ -21,7 +21,7 @@ import GameBoard from "./GameBoardComponents/GameBoard.js";
  * /games/{gameId} -> PlayGame -> GameBoard
  */
 function PlayGame() {
-  console.log("PlayGame re-rendered");
+  // console.log("PlayGame re-rendered");
   const { gameId } = useParams();
   const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ function PlayGame() {
 
   /** Used by the game manager as a callback function to force re-render when game state is updated  */
   function forceReRender() {
-    console.log("PlayGame.forceReRender() called");
+    // console.log("PlayGame.forceReRender() called");
     setRenderToggle( prevValue => { return !prevValue; } );
   }
 

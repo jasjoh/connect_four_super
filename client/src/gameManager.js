@@ -26,11 +26,13 @@ export class GameManager {
 
   // called to asynchronously initialize the game manager using server state
   async initialize() {
+    // console.log("GameManager.initialize() called.")
     await this.updateLocalGame();
     this.board = this.initializeClientBoard();
     this.gameEnding();
-    this.clientTurns = await ConnectFourServerApi.getTurnsForGame(this.gameId);
+    this.clientTurns = this.game.gameTurns;
     this.clientTurnIdsSet = new Set(this.clientTurns.map(turn => turn.turnId));
+    // console.log("initial client turn ids:", this.clientTurnIdsSet);
     this.players = await ConnectFourServerApi.getPlayersForGame(this.gameId);
     if (this.gameState === 1) {
       this.enablePolling();
@@ -64,6 +66,8 @@ export class GameManager {
     if (newTurns.length > 0) {
       this.gameEnding();
     }
+    // console.log("conductPoll() finished; client turns:", this.clientTurns);
+    // console.log("clientTurnIdSet:", this.clientTurnIdsSet);
   }
 
   /** Returns the set of new turns based on comparing this.clientTurnsSet
@@ -72,7 +76,9 @@ export class GameManager {
    */
   async getNewTurns() {
     await this.updateLocalGame();
+    // console.log("clientTurnIdsSet prior to identifying new turns:", this.clientTurnIdsSet);
     const newTurns = this.game.gameTurns.filter(turn => !this.clientTurnIdsSet.has(turn.turnId));
+    // console.log("server turns retrieved:", this.game.gameTurns);
     return newTurns;
   }
 
