@@ -25,6 +25,12 @@ function PlayerList({playerList, action, actionType}) {
 
   return (
     <div className="PlayerList">
+      <div className="PlayerList-title">
+        Existing Players
+      </div>
+      {/* <div className="PlayerList-subTitle">
+        Click a Row to View Details, Manage and Play
+      </div> */}
       <table className="PlayerList-table">
         <thead className="PlayerList-thead">
           <tr>

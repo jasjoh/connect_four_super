@@ -49,10 +49,14 @@ function PlayerCreateForm({ createPlayer }) {
 
   return (
     <div className="PlayerCreateForm">
+      <div className="PlayerCreateForm-title">
+        Create a New Player
+      </div>
       <form onSubmit={ handleSubmit }>
         <div>
-          <label htmlFor="playerCreateForm-name">Player Name:</label>
+          <label className="PlayerCreateForm-label" htmlFor="playerCreateForm-name">Player Name:</label>
           <input
+            className="PlayerCreateForm-inputName"
             id="playerCreateForm-name"
             name="name"
             value={formData.name}
@@ -60,8 +64,9 @@ function PlayerCreateForm({ createPlayer }) {
           </input>
         </div>
         <div>
-          <label htmlFor="playerCreateForm-color">Color:</label>
+          <label className="PlayerCreateForm-label" htmlFor="playerCreateForm-color">Color:</label>
           <input
+            className="PlayerCreateForm-inputColor"
             type="color"
             id="playerCreateForm-color"
             name="color"
@@ -70,8 +75,9 @@ function PlayerCreateForm({ createPlayer }) {
           </input>
         </div>
         <div>
-          <label htmlFor="playerCreateForm-ai">Make AI Player:</label>
+          <label className="PlayerCreateForm-label" htmlFor="playerCreateForm-ai">Make AI Player:</label>
           <input
+            className="PlayerCreateForm-inputCheckBox"
             type="checkbox"
             id="playerCreateForm-ai"
             name="ai"

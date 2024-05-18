@@ -18,11 +18,11 @@ function NavBar() {
   return (
     <div className="NavBar">
       <span className="NavBar-link">
-        <Link to='/games'>Game List</Link>
+        <Link to='/games'>GAME LIST</Link>
       </span>
-      <span className="NavBar-spacer">&nbsp;|&nbsp;</span>
+      {/* <span className="NavBar-spacer">&nbsp;|&nbsp;</span> */}
       <span className="NavBar-link">
-        <Link to='/players'>Player List</Link>
+        <Link to='/players'>PLAYER LIST</Link>
       </span>
     </div>
   );

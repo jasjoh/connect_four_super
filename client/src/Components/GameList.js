@@ -45,6 +45,12 @@ function GameList() {
     <div className="GameList">
       <GameCreateForm createGame={createGame}/>
       <div className="GameList-list">
+        <div className="GameList-title">
+          Existing Games
+        </div>
+        <div className="GameList-subTitle">
+          Click a Row to View Details, Manage and Play
+        </div>
         <table className="GameList-table">
           <thead className="GameList-thead">
             <tr>

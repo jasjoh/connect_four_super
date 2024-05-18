@@ -15,7 +15,6 @@ function Main({ subComponent: SubComponent }) {
 
    return (
     <div className="Main">
-      <NavBar />
       <SubComponent />
     </div>
   );

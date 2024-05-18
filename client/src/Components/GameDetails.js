@@ -78,7 +78,6 @@ import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
 
     return (
       <div className="GameDetails">
-        <NavBar />
         <AddPlayerToGameModal
           isOpen={isModalOpen}
           gameId={gameId}

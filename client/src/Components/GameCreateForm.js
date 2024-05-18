@@ -50,9 +50,13 @@ function GameCreateForm({ createGame }) {
   return (
     <div className="GameCreateForm">
       <form onSubmit={ handleSubmit }>
+        <div className="GameCreateForm-title">
+          Create a New Game
+        </div>
         <div>
-          <label htmlFor="gameCreateForm-name">Board Width:</label>
+          <label className="GameCreateForm-label" htmlFor="gameCreateForm-name">Board Width:</label>
           <input
+            className="GameCreateForm-input"
             id="gameCreateForm-width"
             name="width"
             value={formData.width}
@@ -60,15 +64,16 @@ function GameCreateForm({ createGame }) {
           </input>
         </div>
         <div>
-          <label htmlFor="gameCreateForm-name">Board Height:</label>
+          <label className="GameCreateForm-label" htmlFor="gameCreateForm-name">Board Height:</label>
           <input
+            className="GameCreateForm-input"
             id="gameCreateForm-height"
             name="height"
             value={formData.height}
             onChange={handleChange}>
           </input>
         </div>
-        <div><button className="GameCreateForm-button">Create Game</button></div>
+        <div><button className="GameCreateForm-button">Create</button></div>
       </form>
     </div>
   );
