@@ -7,7 +7,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import PlayerList from "./PlayerList.js";
 import GameBoard from "./GameBoardComponents/GameBoard.js";
 import LoadingSpinner from "./LoadingSpinner.js";
-
+import GameDetailsPropertyList from "./GameDetailsPropertyList.js";
 
 // import "./PlayGame.css";
 /** Main component that handles playing a specific game
@@ -81,11 +81,7 @@ function PlayGame() {
 
   return (
     <div className="PlayGame">
-      <div className="PlayGame-summary">
-        <div>Game ID: {gameId}</div>
-        <div>Game State: {gameStates[gameManager.gameState]}</div>
-      </div>
-      <div className="PlayGame-players-title">Players</div>
+      <GameDetailsPropertyList gameData={gameManager.game.gameData} />
       <PlayerList playerList={gameManager.players} />
       <div className="PlayGame-manageButtons">
         <button className="PlayGame-manageButtons-button" onClick={startGame}>

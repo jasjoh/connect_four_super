@@ -23,10 +23,23 @@ import PlayerListing from "./PlayerListing.js";
 function PlayerList({playerList, action, actionType}) {
   // console.log("PlayerList re-rendered");
 
+  let titleText = '';
+  switch (actionType) {
+    case 'removePlayer', undefined:
+      titleText = 'Game Players'
+      break;
+    case 'deletePlayer':
+      titleText = 'Existing Players'
+      break;
+    case 'addPlayer':
+      titleText = 'Available Players'
+      break;
+  }
+
   return (
     <div className="PlayerList">
       <div className="PlayerList-title">
-        {actionType === 'removePlayer' ? `` : `Existing Players`}
+        {titleText}
       </div>
       {/* <div className="PlayerList-subTitle">
         Click a Row to View Details, Manage and Play

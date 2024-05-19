@@ -9,6 +9,7 @@ import NavBar from "./NavBar.js";
 import PlayerList from "./PlayerList.js";
 import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
 import LoadingSpinner from "./LoadingSpinner.js";
+import GameDetailsPropertyList from "./GameDetailsPropertyList.js";
 
 // import "./GameDetails.css";
 
@@ -86,15 +87,15 @@ import LoadingSpinner from "./LoadingSpinner.js";
           closeModal={closeModal}
           addPlayerToGame={addPlayerToGame} />
         <div className="GameDetails-gameDetails">
-          <span className="GameDetails-gameDetails-title">Game Details</span>
-          <button onClick={playGame} className="GameDetails-gameDetails-button">Play</button>
-          <button onClick={deleteGame} className="GameDetails-gameDetails-button">Delete</button>
-          <div>Game ID: {gameId}</div>
-          <div>Game State: {gameStates[game.gameData.gameState]}</div>
+          <div className="GameDetails-gameDetails-title">Game Details</div>
+          <GameDetailsPropertyList gameData={game.gameData} />
+          <div className="GameDetails-buttons">
+            <button onClick={playGame} className="GameDetails-gameDetails-button">Play</button>
+            <button onClick={deleteGame} className="GameDetails-gameDetails-button">Delete</button>
+            <button onClick={openModal} className="GameDetails-gameDetails-button">Add Player</button>
+          </div>
         </div>
         <div className="GameDetails-gamePlayers">
-          <span className="GameDetails-gamePlayers-title">Game Players</span>
-          <button onClick={openModal} className="GameDetails-gamePlayers-button">Add Player</button>
           { gamePlayers.length > 0 ?
           ( <PlayerList playerList={gamePlayers} action={removePlayer} actionType={'removePlayer'} /> ) :
           ( <div>No Players Added to Game</div> ) }

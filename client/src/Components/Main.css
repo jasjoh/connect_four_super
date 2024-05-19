@@ -34,6 +34,10 @@
   vertical-align: middle;
 }
 
+.PlayerCreateForm-element, .GameCreateForm-element {
+  margin-bottom: 4px;
+}
+
 .GameCreateForm-input {
   width: 50px;
 }
@@ -47,9 +51,10 @@
   vertical-align: middle;
 }
 
-.GameCreateForm-button, .PlayerCreateForm-button {
+.GameCreateForm-button, .PlayerCreateForm-button, .GameDetails-gameDetails-button {
   margin-top: 8px;
   margin-bottom: 2px;
+  margin-right: 5px;
   font-size: 0.9em;
 }
 
@@ -82,4 +87,23 @@
 .GameList-subTitle {
   font-size: 0.8em;
   margin-bottom: 8px;
+}
+
+.GameDetailsPropertyList-prop {
+  width: 100px;
+  display: inline-block;
+}
+
+.GameDetailsPropertyList-val {
+  margin-left: 5px;
+  color: blue;
+}
+
+.PlayGame-manageButtons {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.PlayGame-manageButtons-button {
+  margin-right: 5px;
 }

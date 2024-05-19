@@ -66,7 +66,7 @@ function AddPlayerToGameModal({isOpen, gamePlayers, closeModal, gameId, addPlaye
       <div className="AddPlayerToGameModal-overlay">
         <div className="AddPlayerToGameModal-content">
           <PlayerList action={addPlayerToGame} actionType={'addPlayerToGame'} playerList={availPlayersList} />
-          <button onClick={closeModal}>Finished Adding Players</button>
+          <button className="AddPlayerToGameModal-finishButton" onClick={closeModal}>Finished Adding Players</button>
         </div>
       </div>
     </div>

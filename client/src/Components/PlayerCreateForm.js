@@ -53,7 +53,7 @@ function PlayerCreateForm({ createPlayer }) {
         Create a New Player
       </div>
       <form onSubmit={ handleSubmit }>
-        <div>
+        <div className="PlayerCreateForm-element">
           <label className="PlayerCreateForm-label" htmlFor="playerCreateForm-name">Player Name:</label>
           <input
             className="PlayerCreateForm-inputName"
@@ -63,7 +63,7 @@ function PlayerCreateForm({ createPlayer }) {
             onChange={handleChange}>
           </input>
         </div>
-        <div>
+        <div className="PlayerCreateForm-element">
           <label className="PlayerCreateForm-label" htmlFor="playerCreateForm-color">Color:</label>
           <input
             className="PlayerCreateForm-inputColor"
@@ -74,7 +74,7 @@ function PlayerCreateForm({ createPlayer }) {
             onChange={handleChange}>
           </input>
         </div>
-        <div>
+        <div className="PlayerCreateForm-element">
           <label className="PlayerCreateForm-label" htmlFor="playerCreateForm-ai">Make AI Player:</label>
           <input
             className="PlayerCreateForm-inputCheckBox"

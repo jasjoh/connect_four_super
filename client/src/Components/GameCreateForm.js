@@ -53,7 +53,7 @@ function GameCreateForm({ createGame }) {
         <div className="GameCreateForm-title">
           Create a New Game
         </div>
-        <div>
+        <div className="GameCreateForm-element">
           <label className="GameCreateForm-label" htmlFor="gameCreateForm-name">Board Width:</label>
           <input
             className="GameCreateForm-input"
@@ -63,7 +63,7 @@ function GameCreateForm({ createGame }) {
             onChange={handleChange}>
           </input>
         </div>
-        <div>
+        <div className="GameCreateForm-element">
           <label className="GameCreateForm-label" htmlFor="gameCreateForm-name">Board Height:</label>
           <input
             className="GameCreateForm-input"
