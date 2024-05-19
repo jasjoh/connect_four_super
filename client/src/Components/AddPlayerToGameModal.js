@@ -3,6 +3,7 @@ import "./AddPlayerToGameModal.css";
 import ConnectFourServerApi from "../server";
 import { useState, useEffect } from "react";
 import PlayerList from "./PlayerList.js";
+import LoadingSpinner from "./LoadingSpinner.js";
 
 /** Displays a list of players to add to a game and allows adding them
  *
@@ -58,7 +59,7 @@ function AddPlayerToGameModal({isOpen, gamePlayers, closeModal, gameId, addPlaye
 
 
   if (!isOpen) return null
-  if (isLoading) return <div><p>Loading...</p></div>
+  if (isLoading) return ( <LoadingSpinner /> );
 
   return (
     <div className="AddPlayerToGameModal">

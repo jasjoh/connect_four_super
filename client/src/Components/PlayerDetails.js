@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import NavBar from "./NavBar.js";
+import LoadingSpinner from "./LoadingSpinner.js";
 
 // import "./PlayerDetails.css";
 
@@ -34,7 +35,7 @@ import NavBar from "./NavBar.js";
       fetchPlayer();
     }, [playerId])
 
-    if (isLoading) return <div><p>Loading...</p></div>
+    if (isLoading) return ( <LoadingSpinner /> );
 
     return (
       <div className="PlayerDetails">

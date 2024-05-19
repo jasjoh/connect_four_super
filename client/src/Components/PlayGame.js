@@ -6,6 +6,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import PlayerList from "./PlayerList.js";
 import GameBoard from "./GameBoardComponents/GameBoard.js";
+import LoadingSpinner from "./LoadingSpinner.js";
 
 
 // import "./PlayGame.css";
@@ -76,7 +77,7 @@ function PlayGame() {
     gameManager.disablePolling();
   }
 
-  if (isLoading) return <div><p>Loading...</p></div>
+  if (isLoading) return ( <LoadingSpinner /> );
 
   return (
     <div className="PlayGame">

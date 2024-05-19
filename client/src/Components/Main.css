@@ -2,7 +2,7 @@
   width: 900px;
 }
 
-.GameCreateForm, .PlayerCreateForm {
+.GameCreateForm, .PlayerCreateForm, .GameDetails-gameDetails {
   border-width: 2px;
   border-style: solid;
   margin-top: 2px;
@@ -16,7 +16,7 @@
   align-items: center;
 } */
 
-.GameCreateForm-title, .PlayerCreateForm-title {
+.GameCreateForm-title, .PlayerCreateForm-title, .GameDetails-gameDetails-title {
   font-size: 1.1em;
   margin-bottom: 8px;
 }

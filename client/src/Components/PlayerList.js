@@ -26,7 +26,7 @@ function PlayerList({playerList, action, actionType}) {
   return (
     <div className="PlayerList">
       <div className="PlayerList-title">
-        Existing Players
+        {actionType === 'removePlayer' ? `` : `Existing Players`}
       </div>
       {/* <div className="PlayerList-subTitle">
         Click a Row to View Details, Manage and Play

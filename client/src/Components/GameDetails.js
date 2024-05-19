@@ -8,6 +8,7 @@ import "./GameDetails.css";
 import NavBar from "./NavBar.js";
 import PlayerList from "./PlayerList.js";
 import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
+import LoadingSpinner from "./LoadingSpinner.js";
 
 // import "./GameDetails.css";
 
@@ -74,7 +75,7 @@ import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    if (isLoading) return <div><p>Loading...</p></div>
+    if (isLoading) return ( <LoadingSpinner /> );
 
     return (
       <div className="GameDetails">

@@ -4,6 +4,7 @@ import ConnectFourServerApi from "../server";
 import { useState, useEffect } from "react";
 import GameListing from "./GameListing";
 import GameCreateForm from "./GameCreateForm";
+import LoadingSpinner from "./LoadingSpinner";
 
 /** Displays the list of available games
  *
@@ -39,7 +40,7 @@ function GameList() {
     setGameList(updatedGameList);
   }
 
-  if (isLoading) return <div><p>Loading...</p></div>
+  if (isLoading) return ( <LoadingSpinner /> );
 
   return (
     <div className="GameList">

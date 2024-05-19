@@ -4,6 +4,7 @@ import ConnectFourServerApi from "../server";
 import { useState, useEffect } from "react";
 import PlayerList from "./PlayerList.js";
 import PlayerCreateForm from "./PlayerCreateForm.js";
+import LoadingSpinner from "./LoadingSpinner.js";
 
 /** Displays the list of existing players
  *
@@ -46,7 +47,7 @@ function PlayerListAndCreate() {
     setPlayerList(updatedPlayerList);
   }
 
-  if (isLoading) return <div><p>Loading...</p></div>
+  if (isLoading) return ( <LoadingSpinner /> );
 
   return (
     <div className="PlayerListAndCreate">
