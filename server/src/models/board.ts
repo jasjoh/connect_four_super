@@ -48,7 +48,7 @@ export class Board {
 
     const boardData = this.initializeBoardData(dimensions);
 
-    console.log("attempting to create new board");
+    // console.log("attempting to create new board");
 
     const result: QueryResult<BoardInterface> = await db.query(`
                 INSERT INTO boards (
@@ -100,7 +100,7 @@ export class Board {
    * Also updates the array of columns which are full
    */
   static async update(boardId: string, boardData: BoardDataType) : Promise<BoardInterface> {
-    console.log("Board.update() called.");
+    // console.log("Board.update() called.");
 
     const result: QueryResult<BoardInterface> = await db.query(`
       UPDATE boards
@@ -120,7 +120,7 @@ export class Board {
    * Resets (re-initializes) the board data for a given game
    */
   static async reset(boardId: string) : Promise<undefined> {
-    console.log("Board.reset() called.");
+    // console.log("Board.reset() called.");
 
     const result: QueryResult<BoardDimensionsInterface> = await db.query(`
       SELECT

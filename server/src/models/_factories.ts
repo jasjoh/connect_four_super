@@ -25,7 +25,7 @@ async function createGameWithBoardData(
     currPlayerId: string
   ): Promise<GameInterface> {
 
-  console.log("createGameWithBoardData factory function called");
+  // console.log("createGameWithBoardData factory function called");
   _validateBoardData();
 
   const boardDimensions = {
@@ -82,7 +82,7 @@ async function createNearlyWonGame(
   winningPlayerId: string
 ): Promise<GameInterface> {
 
-console.log("createNearlyWonGame factory function called");
+// console.log("createNearlyWonGame factory function called");
 
 let game = await Game.create(boardDimensions);
 await Game.addPlayers(game.id, playerIds);
@@ -125,7 +125,7 @@ async function createNearlyTiedGame(
   currPlayerId: string
 ): Promise<GameInterface> {
 
-console.log("createNearlyTiedGame factory function called");
+// console.log("createNearlyTiedGame factory function called");
 
 let game = await Game.create(boardDimensions);
 const players = await createPlayers(2);
@@ -165,7 +165,7 @@ return game;
  * Returns an array of player objects which have been created (PlayerInterface)
 */
 async function createPlayers(count : number = 1) : Promise<PlayerInterface[]> {
-  console.log("createPlayers factory function called");
+  // console.log("createPlayers factory function called");
   const players : PlayerInterface[] = [];
   let counter = 1;
   while (counter <= count) {

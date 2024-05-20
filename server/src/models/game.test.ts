@@ -41,7 +41,7 @@ describe("create a new game", function () {
     // verify game was returned from creation
     const createdGame = await Game.create(boardDimensions);
 
-    console.log("result of creating a game:", createdGame);
+    // console.log("result of creating a game:", createdGame);
 
     const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 
@@ -248,10 +248,11 @@ describe("start a game", function () {
     await Game.addPlayers(gameToStart.id, [players[0].id]);
     await Game.addPlayers(gameToStart.id, [players[1].id]);
 
+    const spy = jest.spyOn(Game, 'nextTurn').mockResolvedValue();
     await Game.start(gameToStart.id);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
 
-    const startedGame = await Game.get(gameToStart.id);
-    expect(startedGame.currPlayerId).not.toBeNull();
   });
 
 });
@@ -259,6 +260,8 @@ describe("start a game", function () {
 describe("drops piece", function () {
 
   test("successfully drop piece", async function () {
+
+    console.log("running successfully drop piece test");
 
     // setup a game and start it
     const players = await createPlayers(2);

@@ -38,8 +38,14 @@ router.get("/:id/turns", async function (req: Request, res: Response) {
   return res.json({ turns });
 });
 
-/** Retrieves a specific game based on id
- * Returns a game object like { id, ai, color, name, createdOn }
+/** Retrieves a specific game and it's turns based on game id
+ * Returns a game object like {
+ *  gameData {
+ *    id, boardId, boardData, boardWidth, boardHeight, gameState
+ *    placedPieces, winningSet, currPlayerId, createdOn, totalPlayers
+ * }
+ *  gameTurns [ { turnId, gameId, playerId, location, createdOnMs } ]
+ * }
  */
 router.get("/:id", async function (req: Request, res: Response) {
   const game = await Game.getWithTurns(req.params.id);

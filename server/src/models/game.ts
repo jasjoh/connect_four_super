@@ -112,11 +112,11 @@ class Game {
      * - see if can be combined into single SQL statement
      */
 
-    console.log("Game.create() called");
+    // console.log("Game.create() called");
 
     const board = await Board.create(boardDimensions);
 
-    console.log("board created:", board);
+    // console.log("board created:", board);
 
     let result : QueryResult<GameInterface> = await db.query(`
       INSERT INTO games ( board_id )
@@ -249,7 +249,7 @@ class Game {
     gameUpdate : GameUpdateInterface
   ) : Promise<GameInterface> {
 
-    console.log("Game.update() called.");
+    // console.log("Game.update() called.");
     const keys = Object.keys(gameUpdate);
 
     // for every key (e.g. placedPieces)
@@ -260,16 +260,16 @@ class Game {
 
     const setClause = keys.map((key, index) => `${_.snakeCase(key)} = $${index + 2}`).join(', ');
     const sqlQuery = `UPDATE games SET ${setClause} WHERE id = $1`;
-    console.log("update sql query established:", sqlQuery);
+    // console.log("update sql query established:", sqlQuery);
 
     const values = keys.map(key => gameUpdate[key as keyof GameUpdateInterface]);
     values.unshift(gameId);
-    console.log("values for token replacement established:", values);
+    // console.log("values for token replacement established:", values);
 
     await db.query(sqlQuery, values);
     const game = await Game.get(gameId);
 
-    console.log("Update game:", game);
+    // console.log("Update game:", game);
 
     return game;
   }
@@ -295,7 +295,7 @@ class Game {
    */
   static async addPlayers(gameId: string, players: string[]): Promise<number> {
 
-    console.log("Game.addPlayers() called w/ players:", players);
+    // console.log("Game.addPlayers() called w/ players:", players);
 
     let sqlQueryValues: string = '';
 
@@ -330,7 +330,7 @@ class Game {
         WHERE game_id = $1
     `, [gameId]);
 
-    console.log("players added to game; new count:", result);
+    // console.log("players added to game; new count:", result);
 
     return result.rows[0].count;
   }
@@ -355,7 +355,8 @@ class Game {
         FROM game_players
         WHERE game_id = $1
     `, [gameId]);
-    console.log("result of getting count from game_players:", queryCRIResult);
+
+    // console.log("result of getting count from game_players:", queryCRIResult);
 
     return queryCRIResult.rows[0].count;
   }
@@ -392,7 +393,7 @@ class Game {
   */
   static async start(gameId: string, nextTurn: boolean = true): Promise<undefined> {
 
-    console.log("Game.start() called.");
+    // console.log("Game.start() called.");
 
     const game = await Game.get(gameId);
 
@@ -426,17 +427,20 @@ class Game {
       let gamePlayerIds = gamePlayers.map(p => p.id);
       const sortedGamePlayerIds = fisherSort(gamePlayerIds) as string[];
 
-      console.log("playerIds after randomly sorting:", sortedGamePlayerIds);
+      // console.log("playerIds after randomly sorting:", sortedGamePlayerIds);
 
       // set play order
-      console.log("setting play order in game_players.");
+      // console.log("setting play order in game_players.");
+
       let sqlQuery = 'UPDATE game_players SET play_order = CASE ';
       for (let i = 0; i < sortedGamePlayerIds.length; i++) {
         sqlQuery += `WHEN player_id = '${sortedGamePlayerIds[i]}' THEN ${i} `;
       }
       sqlQuery += `END WHERE game_id = $1`;
       await db.query(sqlQuery, [gameId]);
-      console.log("play order set in game_players");
+
+      // console.log("play order set in game_players");
+
       return;
     }
 
@@ -457,7 +461,7 @@ class Game {
    * Returns undefined
    */
   static async nextTurn(gameId: string) {
-    console.log("Game.nextTurn called w/ gameId:", gameId);
+    // console.log("Game.nextTurn called w/ gameId:", gameId);
     /**
      * Core Logic:
      * - determines current player
@@ -521,7 +525,7 @@ class Game {
 
       }
 
-      console.log("new current player selected:", nextPlayer);
+      // console.log("new current player selected:", nextPlayer);
 
       const queryGIResult = await db.query(`
           UPDATE games
@@ -530,7 +534,7 @@ class Game {
           RETURNING games.id, games.curr_player_id as "currPlayerId"
       `, [gameId, nextPlayer.id]);
 
-      console.log("game updated w/ curr player set:", queryGIResult.rows[0]);
+      // console.log("game updated w/ curr player set:", queryGIResult.rows[0]);
 
       return nextPlayer;
     }
@@ -566,9 +570,10 @@ class Game {
      * -- if end game, update state accordingly and you're done
      * -- if game is not ended, call nextTurn for provide gameId
      */
-    console.log(`dropPiece() called with
-      gameId: ${gameId}, playerId: ${playerId}, col: ${col}`
-    );
+
+    // console.log(`dropPiece() called with
+    //   gameId: ${gameId}, playerId: ${playerId}, col: ${col}`
+    // );
 
     let game = await Game.get(gameId);
     const validGame = _validateGameState(game);
@@ -596,7 +601,7 @@ class Game {
     await _refreshGameState(game);
 
     if (game.gameState === 1) {
-      console.log("Game has not ended so calling nextTurn()");
+      // console.log("Game has not ended so calling nextTurn()");
       // start the next turn
       await Game.nextTurn(gameId);
     }
@@ -621,7 +626,8 @@ class Game {
       col: number
     ): number {
 
-      console.log(`_findEmptyCellInColumn(${col}) called.`);
+      // console.log(`_findEmptyCellInColumn(${col}) called.`);
+
       // check if the column is full and return 'null' if true
       if (validGame.boardData[0][col].playerId !== null) {
         throw new InvalidPiecePlacement('Column is full.');
@@ -636,7 +642,7 @@ class Game {
         if (validGame.boardData[row][col].playerId !== null) {
           // console.log("found a piece at row, col", row, " ", col);
           // console.log("returning the row above:", row - 1);
-          console.log(`returning ${row} - 1.`);
+          // console.log(`returning ${row} - 1.`);
           return row - 1;
         }
         row++;
@@ -681,13 +687,13 @@ class Game {
         if (game.currPlayerId !== playerId) {
           throw new Error("Game is won, but not by current player. Something went wrong.");
         }
-        console.log("updating game gameState in DB since winner was found");
+        // console.log("updating game gameState in DB since winner was found");
         await Game.update(game.id, { winningSet: game.winningSet, gameState: 2 })
       }
 
       // check for tie
       if (game.gameState === 3) {
-        console.log("updating game gameState in DB since tie was found");
+        // console.log("updating game gameState in DB since tie was found");
         await Game.update(game.id, { gameState: 3 })
         return;
       }
@@ -701,7 +707,7 @@ class Game {
    */
   static checkForGameEnd(game : GameInterface) : GameInterface {
 
-    console.log("checkForGameEnd() called with game:", game);
+    // console.log("checkForGameEnd() called with game:", game);
 
     if (game.placedPieces === null) { throw new Error("placedPiece is null.") };
 
@@ -733,7 +739,7 @@ class Game {
             }
           )
         ) {
-          console.log("checkForGameEnd() determined game is won");
+          // console.log("checkForGameEnd() determined game is won");
           game.gameState = 2;
           game.winningSet = validCoordSet;
           return game as GameInterface;
@@ -743,12 +749,12 @@ class Game {
 
     // check for tie
     if (game.boardData[0].every(cell => cell.playerId !== null)) {
-      console.log("checkForGameEnd() determined game is tied");
+      // console.log("checkForGameEnd() determined game is tied");
       game.gameState = 3;
       return game as GameInterface;
     }
 
-    console.log("checkForGameEnd() determined game should continue");
+    // console.log("checkForGameEnd() determined game should continue");
     return game as GameInterface;
   }
 }

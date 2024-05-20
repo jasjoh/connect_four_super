@@ -25,7 +25,7 @@ export class Turn {
     playerId: string,
     location: number[]
   ) : Promise<undefined> {
-    console.log("Turns.create() called.")
+    // console.log("Turns.create() called.")
     await db.query(`
         INSERT INTO game_turns ( game_id, player_id, location )
         VALUES ( $1, $2, $3 )
@@ -37,7 +37,7 @@ export class Turn {
    * Returns an array of 0 or more turns in the form of TurnInterface[]
    */
   static async getAll(gameId: string, playerId?: string) : Promise<TurnInterface[]> {
-    console.log("Turns.getAll() called");
+    // console.log("Turns.getAll() called");
 
     let whereConditions : string = 'game_id = $1';
     let values = [gameId];
@@ -66,7 +66,7 @@ export class Turn {
    * Returns undefined if successful
    */
   static async deleteAll(gameId: string, playerId?: string) : Promise<undefined> {
-    console.log("Turns.deleteAll() called");
+    // console.log("Turns.deleteAll() called");
 
     let whereConditions : string = 'game_id = $1';
     let values = [gameId];

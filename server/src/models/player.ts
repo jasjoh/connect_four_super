@@ -85,7 +85,7 @@ class Player {
     `
     const result = await db.query(sqlQuery);
 
-    console.log("TO BE TYPED: result in Player.getAll");
+    // console.log("TO BE TYPED: result in Player.getAll");
 
     return result.rows;
   }
@@ -135,14 +135,14 @@ class Player {
    * Should only be called on behalf of AI players by the AI logic.
    */
   static async takeTurn(gameId: string, playerId: string) : Promise<undefined> {
-    console.log("takeTurn() called for playerId:", playerId);
+    // console.log("takeTurn() called for playerId:", playerId);
     const game = await Game.get(gameId);
     const board = await Board.get(game.boardId);
     const availCols = await Board.getAvailColumns(game.boardId);
-    console.log("columns available:", availCols);
+    // console.log("columns available:", availCols);
     await delay(delayInMs);
     let colToAttempt = availCols[Math.floor(Math.random() * availCols.length)];
-    console.log(`attempting to drop piece for AI player: ${playerId} at column: ${colToAttempt} ...`);
+    // console.log(`attempting to drop piece for AI player: ${playerId} at column: ${colToAttempt} ...`);
     await Game.dropPiece(gameId, playerId, colToAttempt);
   }
 
