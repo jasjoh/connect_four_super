@@ -1,3 +1,5 @@
+/** Some generic utility functions and values */
+
 const gameStates = [
   'New',
   'Started',

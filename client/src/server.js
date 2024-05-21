@@ -74,11 +74,14 @@ class ConnectFourServerApi {
   }
 
   /** Get all turns for a specific game */
-  static async getTurnsForGame(gameId) {
-    const data = await ConnectFourServerApi.request(`games/${gameId}/turns`, );
-    // console.log("retrieved turns:", data);
-    return data.turns;
-  }
+
+  // DEPRECATED - TURNS NOW RETURN AS PART OF GETTING A GAME
+
+  // static async getTurnsForGame(gameId) {
+  //   const data = await ConnectFourServerApi.request(`games/${gameId}/turns`, );
+  //   // console.log("retrieved turns:", data);
+  //   return data.turns;
+  // }
 
   /** Creates a new player
    * Expects: { name, color, ai }
@@ -132,7 +135,7 @@ class ConnectFourServerApi {
   /** Deletes a player (from the database completely)
    * Returns undefined if successful and throws error otherwise */
   static async deletePlayer(playerId) {
-    const data = await ConnectFourServerApi.request(`players/${playerId}`, {}, 'DELETE' );
+    await ConnectFourServerApi.request(`players/${playerId}`, {}, 'DELETE' );
     // console.log("player delete response:", data);
     return undefined;
   }
@@ -140,7 +143,7 @@ class ConnectFourServerApi {
   /** Removes a player from a game
    * Returns undefined if successful and throws error otherwise */
   static async removePlayerFromGame(gameId, playerId) {
-    const data = await ConnectFourServerApi.request(`games/${gameId}/players/${playerId}`, {}, 'DELETE' );
+    await ConnectFourServerApi.request(`games/${gameId}/players/${playerId}`, {}, 'DELETE' );
     // console.log("removed player response:", data);
     return undefined;
   }

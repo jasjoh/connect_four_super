@@ -24,10 +24,14 @@ export class GameManager {
     this.currPlayerId = undefined;
   }
 
-  // called to asynchronously initialize the game manager using server state
+  /**
+   * Called after instantiation in order to initialize remaining state based
+   * on server-side state. Allows for constructor to be called synchronously.
+   * Returns undefined.
+   */
   async initialize() {
     // console.log("GameManager.initialize() called.")
-    await this.updateLocalGame();
+    await this._updateLocalGame();
     this.board = this.initializeClientBoard();
     this.gameEnding();
     this.clientTurns = this.game.gameTurns;
@@ -39,19 +43,22 @@ export class GameManager {
     }
   }
 
-  // called to fetch an updated version of the game and populate local state
-  async updateLocalGame() {
+  /** Internal function for GameManager
+  * Fetches an updated version of the game and populates (refreshes) local state
+  */
+  async _updateLocalGame() {
     this.game = await ConnectFourServerApi.getGame(this.gameId);
     this.gameState = this.game.gameData.gameState;
     this.currPlayerId = this.game.gameData.currPlayerId;
   }
 
-  /** Internal conductor function to handle all operations that take place during
-   * a polling sessions including any callbacks to React to re-render if needed
+  /** Internal function for GameManager
+   * Conductor function to handle all operations that take place during
+   * a polling session including any callbacks to React to re-render if needed
    */
-  async conductPoll() {
-    // console.log("GameManager.conductPoll() called");
-    const newTurns = await this.getNewTurns();
+  async _conductPoll() {
+    // console.log("GameManager._conductPoll() called");
+    const newTurns = await this._getNewTurns();
     // console.log("newTurns:", newTurns);
     for (let turn of newTurns) {
       // console.log("updating client turn array and board with new turn");
@@ -66,26 +73,28 @@ export class GameManager {
     if (newTurns.length > 0) {
       this.gameEnding();
     }
-    // console.log("conductPoll() finished; client turns:", this.clientTurns);
+    // console.log("_conductPoll() finished; client turns:", this.clientTurns);
     // console.log("clientTurnIdSet:", this.clientTurnIdsSet);
   }
 
-  /** Returns the set of new turns based on comparing this.clientTurnsSet
+  /** Internal function for GameManager
+   * Returns the set of new turns based on comparing this.clientTurnsSet
    * against a provided list of serverTurns and returning any server turns
    * not found in the client turns list.
    */
-  async getNewTurns() {
-    await this.updateLocalGame();
+  async _getNewTurns() {
+    await this._updateLocalGame();
     // console.log("clientTurnIdsSet prior to identifying new turns:", this.clientTurnIdsSet);
     const newTurns = this.game.gameTurns.filter(turn => !this.clientTurnIdsSet.has(turn.turnId));
     // console.log("server turns retrieved:", this.game.gameTurns);
     return newTurns;
   }
 
-  /** Initializes the client-side representation of the game board on construction
-   * boardData: [ [ { playerId, validCoordSets } ] ]
+  /** Internal function for GameManager
+   * Initializes a client-side representation of the game board on construction
+   * Returns boardData: [ [ { playerId, validCoordSets } ] ]
   */
-  initializeClientBoard() {
+  _initializeClientBoard() {
     // console.log("initializeClientBoard called with boardData:", boardData);
     const board = [];
     for (let row of this.game.gameData.boardData) {
@@ -102,19 +111,21 @@ export class GameManager {
     return board;
   }
 
-  /** Updates this.board with the provide turn object:
+  /** Internal function for GameManager
+   * Updates this.board with the provided turn object:
    * { turnId, location, playerId, gameId, createdOnMs } */
-  updateBoardWithTurn(turn) {
+  _updateBoardWithTurn(turn) {
     this.board[turn.location[0]][turn.location[1]].playerId = turn.playerId;
   }
 
-  /** Checks for and handles games which are won or tied */
-  gameEnding() {
+  /** Internal function for GameManager
+   * Checks for and handles games which are won or tied */
+  _gameEnding() {
     if (this.gameState === 2) {
       // game is won
       this.pollForTurns = false;
       this.isPolling = false;
-      highlightWinningCells(this);
+      _highlightWinningCells(this);
       this.forceReRender(); // call callback to re-render
     } else if (this.gameState === 3) {
       // game is tied
@@ -123,7 +134,10 @@ export class GameManager {
       this.forceReRender(); // call callback to re-render
     }
 
-    function highlightWinningCells(parent) {
+    /** Internal function for GameManager._gameEnding()
+     * Sets highlight = true for each winning cell in a won game
+     */
+    function _highlightWinningCells(parent) {
       for (let cell of parent.game.gameData.winningSet) {
         parent.board[cell[0]][cell[1]].highlight = true;
       }
@@ -131,7 +145,7 @@ export class GameManager {
   }
 
   /** Drops a piece at the specified column for the current player associated with
-   * the game associated with this game manager
+   * the game associated with this game manager. Returns undefined.
    */
   async dropPiece(column) {
     if (this.gameState !== 1) {
@@ -139,7 +153,7 @@ export class GameManager {
       return;
     }
     await ConnectFourServerApi.dropPiece(this.gameId, this.currPlayerId, column);
-    await this.conductPoll();
+    await this._conductPoll();
   }
 
   /** Starts (or re-starts) the game associated with this game manager */
@@ -155,12 +169,12 @@ export class GameManager {
     await ConnectFourServerApi.deleteGame(this.gameId);
   }
 
-  /** Enables polling and initiates polling (via this.poll()) */
+  /** Enables polling and initiates polling (via this._poll()) */
   enablePolling() {
     this.pollForTurns = true;
     if (!this.isPolling) {
       this.isPolling = true;
-      this.poll();
+      this._poll();
     }
   }
 
@@ -170,12 +184,13 @@ export class GameManager {
     this.pollForTurns = false;
   }
 
-  /** Polling function which calls this.updateTurns() and then
+  /** Internal function for GameMAnager
+   * Polling function which calls this.updateTurns() and then
    * awaits updateTurnsDelayInMs to transpire before calling again.
    */
-  async poll() {
+  async _poll() {
     while (this.pollForTurns) {
-      await this.conductPoll();
+      await this._conductPoll();
       await delay(updateTurnsDelayInMs);
     }
   }
