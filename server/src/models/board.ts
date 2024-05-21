@@ -1,9 +1,4 @@
-import { SQLQueries } from "../utilities/sqlQueries";
-import { CountResultInterface } from "../utilities/commonInterfaces";
-import { v4 as uuidv4 } from "uuid";
-
 import db from "../db";
-import { PlayerInterface } from "./player";
 import { QueryResult } from "pg";
 
 // a board cell can be null if uninitialized or in a final state if initialized
@@ -175,6 +170,8 @@ export class Board {
       // console.log("Matrix initialized.")
     }
 
+    /** Internal function for Board.initializeBoardData()
+     * Initializes each space with valid coords and a null player ID */
     function _populateBoardSpaces() {
       // console.log("_populateBoardSpaces() called.")
       for (let y = 0; y < dimensions.height; y++) {
@@ -189,7 +186,8 @@ export class Board {
 
       // console.log("Board spaces populated:", newBoardState);
 
-      /** Accepts board coordinates and return array of valid coord sets */
+      /** Internal function for Board.initializeBoardData()._populateBoardSpaces()
+       * Accepts board coordinates and return array of valid coord sets */
       function _populateValidCoordSets(y: number, x: number) {
         // console.log("_populateValidCoordSets called with yx:", y, x);
         const vcs: number[][][] = [];

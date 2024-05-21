@@ -1,6 +1,6 @@
 /** Simple demo Express app. */
 import express, { Express, Request, Response, NextFunction } from "express";
-import { ExpressError, NotFoundError, BadRequestError } from "./expressError";
+import { ExpressError, NotFoundError } from "./expressError";
 import cors from "cors";
 
 import { gamesRouter } from "./routes/games";

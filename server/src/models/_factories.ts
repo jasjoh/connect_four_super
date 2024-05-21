@@ -1,8 +1,4 @@
-import db from "../db";
-import { QueryResult } from "pg";
-
 import {
-  BoardCellFinalStateInterface,
   Game,
   GameInterface,
   GameUpdateInterface,
@@ -21,8 +17,7 @@ import { Board } from "./board";
  * Returns the newly created Game instance
  */
 async function createGameWithBoardData(
-    boardData: BoardDataType,
-    currPlayerId: string
+    boardData: BoardDataType
   ): Promise<GameInterface> {
 
   // console.log("createGameWithBoardData factory function called");
@@ -58,6 +53,8 @@ async function createGameWithBoardData(
 
   return game;
 
+  /** Internal function for createGameWithBoardData()
+   * Validates every playerId has a valid value */
   function _validateBoardData() {
     for (let row of boardData) {
       const allNotUndefined = row.every(c => c.playerId !== undefined );

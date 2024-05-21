@@ -67,6 +67,7 @@ async function commonAfterEach() {
   await db.query("ROLLBACK");
 }
 
+/** Kills the DB connection once all tests have run */
 async function commonAfterAll() {
   await db.end();
 }

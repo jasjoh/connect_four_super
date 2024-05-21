@@ -1,14 +1,13 @@
-import { ExpressError, NotFoundError, BadRequestError } from "../expressError";
-import { SQLQueries } from "../utilities/sqlQueries";
 import { QueryResult } from "pg";
 
 import db from "../db";
 
 export interface TurnInterface {
-  turnId: number,
-  gameId: string,
-  playerId: string,
-  location: string[]
+  turnId: number;
+  gameId: string;
+  playerId: string;
+  location: string[];
+  createdOnMs: number;
 }
 
 export class Turn {

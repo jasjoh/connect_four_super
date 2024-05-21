@@ -1,17 +1,16 @@
-import { ExpressError, NotFoundError, BadRequestError } from "../expressError";
+import { NotFoundError } from "../expressError";
 import {
   TooFewPlayers, PlayerAlreadyExists,
   InvalidGameState, InvalidPiecePlacement, NotCurrentPlayer
 } from "../utilities/gameErrors";
 import { SQLQueries } from "../utilities/sqlQueries";
 import { CountResultInterface } from "../utilities/commonInterfaces";
-import { fisherSort, generateRandomName } from "../utilities/utils";
+import { fisherSort } from "../utilities/utils";
 
 import db from "../db";
 import { Player, PlayerInterface } from "./player";
 import {
   Board,
-  BoardInterface,
   BoardCellFinalStateInterface,
   BoardDataType,
   BoardDimensionsInterface
@@ -44,7 +43,7 @@ import _ from "lodash";
  */
 
 interface GameUpdateInterface {
-  boardId?: string
+  boardId?: string;
   gameState?: number;
   placedPieces?: number[][] | null;
   winningSet?: number[][] | null;
@@ -74,23 +73,8 @@ interface StartedGameInterface extends GameInterface {
   currPlayerIid: string;
 }
 
-interface CheckGameEndInterface {
-  board: BoardDataType;
-  placedPieces: number[][];
-}
-
 interface GamePlayersInterface extends PlayerInterface {
   playOrder: number | null;
-}
-
-interface gameInterface {
-  state: number,
-  winningSet: number[][] | null,
-  winningPlayerId: string | null;
-}
-
-interface GameTurnInterface {
-
 }
 
 class Game {
@@ -118,7 +102,7 @@ class Game {
 
     // console.log("board created:", board);
 
-    let result : QueryResult<GameInterface> = await db.query(`
+    let result: QueryResult<GameInterface> = await db.query(`
       INSERT INTO games ( board_id )
       VALUES ( $1 )
       RETURNING *
@@ -137,7 +121,7 @@ class Game {
    * Returns the created game as GameInterface
    * */
   static async createWithBoard(
-    boardId : string
+    boardId: string
   ): Promise<GameInterface> {
 
     /** TODO:
@@ -147,7 +131,7 @@ class Game {
      * - see if can be extended version of create() (DRY principle)
      */
 
-    let result : QueryResult<GameInterface> = await db.query(`
+    let result: QueryResult<GameInterface> = await db.query(`
       INSERT INTO games ( board_id )
       VALUES ( $1 )
       RETURNING *
@@ -227,7 +211,7 @@ class Game {
    *
    * Throws NotFoundError is no matching game is found
    */
-  static async getWithTurns( gameId: string): Promise<GameWithTurnsInterface> {
+  static async getWithTurns(gameId: string): Promise<GameWithTurnsInterface> {
     try {
       await db.query('BEGIN');
       const game = await this.get(gameId);
@@ -246,8 +230,8 @@ class Game {
    */
   static async update(
     gameId: string,
-    gameUpdate : GameUpdateInterface
-  ) : Promise<GameInterface> {
+    gameUpdate: GameUpdateInterface
+  ): Promise<GameInterface> {
 
     // console.log("Game.update() called.");
     const keys = Object.keys(gameUpdate);
@@ -410,7 +394,7 @@ class Game {
 
     await _setPlayOrder();
 
-    await Game.update(gameId, { gameState: 1} );
+    await Game.update(gameId, { gameState: 1 });
 
     if (nextTurn) Game.nextTurn(gameId);
     return undefined;
@@ -444,6 +428,9 @@ class Game {
       return;
     }
 
+    /** Internal function for Game.start()
+     * Calls the DB to reset the placedPieces and winningSet for a game to [][]
+     */
     async function _resetGameData(): Promise<undefined> {
       await db.query(`
         UPDATE games
@@ -485,7 +472,7 @@ class Game {
      * - If there is no current player (new game), sets it to play order 0
      * - If it's the last player in player order, sets it to play order 0
      */
-    async function _updateCurrentPlayer(gamePlayers : GamePlayersInterface[]): Promise<GamePlayersInterface> {
+    async function _updateCurrentPlayer(gamePlayers: GamePlayersInterface[]): Promise<GamePlayersInterface> {
 
       let nextPlayer: GamePlayersInterface;
       const currPlayer = gamePlayers.find(
@@ -538,16 +525,14 @@ class Game {
 
       return nextPlayer;
     }
-
-
   }
 
   /**
    * Retrieves the game turns for a given game ID
-   * Game turns are an array of { id, playerId, gameId, location, createOnEpoch }
+   * Game turns are an array of TurnInterface objects
    * If not no game turns exist, returns null
    */
-  static async getTurns(gameId: string): Promise<GameTurnInterface[]> {
+  static async getTurns(gameId: string): Promise<TurnInterface[]> {
     // console.log("getTurns() called");
     const turns = await Turn.getAll(gameId);
     return turns;
@@ -560,7 +545,7 @@ class Game {
    * If game is not over, starts next turn (to switch to next player)
    * Returns true if the drop was successful, otherwise false   *
    */
-  static async dropPiece(gameId: string, playerId: string, col: number) : Promise<GameInterface> {
+  static async dropPiece(gameId: string, playerId: string, col: number): Promise<GameInterface> {
     /**
      * Core Logic:
      * - determine validity of drop
@@ -608,8 +593,9 @@ class Game {
 
     return game;
 
-    /** Validates games is in state where a piece can be dropped by the current player. */
-    function _validateGameState(game : GameInterface): StartedGameInterface {
+    /** Internal function for Game.dropPiece()
+     * Validates games is in state where a piece can be dropped by the current player. */
+    function _validateGameState(game: GameInterface): StartedGameInterface {
       if (game === null) throw new NotFoundError(`No game with id: ${gameId}`);
       if (game.gameState !== 1) {
         throw new InvalidGameState('Game is not started or has finished.');
@@ -620,9 +606,10 @@ class Game {
       return game as StartedGameInterface;
     }
 
-    /* Finds an empty row in a given column to place a piece. */
+    /** Internal function for Game.dropPiece()
+     * Finds an empty row in a given column to place a piece. */
     function _findEmptyCellInColumn(
-      validGame : StartedGameInterface,
+      validGame: StartedGameInterface,
       col: number
     ): number {
 
@@ -651,7 +638,7 @@ class Game {
       return validGame.boardHeight - 1;
     }
 
-    /**
+    /** Internal function for Game.dropPiece()
      * Adds the specified playerId to the specified location in the specified Game
      * */
     async function _addToBoard(
@@ -665,11 +652,12 @@ class Game {
 
     }
 
-    /** Adds the specified location to the placed pieces for the specified game */
+    /** Internal function for Game.dropPiece()
+     * Adds the specified location to the placed pieces for the specified game */
     async function _addToPlacedPieces(
       game: GameInterface,
       location: number[]
-    ) : Promise<undefined> {
+    ): Promise<undefined> {
 
       if (game.placedPieces === null) {
         game.placedPieces = [[location[0], location[1]]];
@@ -677,24 +665,25 @@ class Game {
         game.placedPieces.push([location[0], location[1]]);
       }
 
-      await Game.update(game.id, { placedPieces: game.placedPieces })
+      await Game.update(game.id, { placedPieces: game.placedPieces });
 
     }
 
-    /** Refreshes DB game state based on in-memory game state. Sets winning set if won. */
-    async function _refreshGameState(game : GameInterface) : Promise<undefined> {
+    /** Internal function for Game.dropPiece()
+     * Refreshes DB game state based on in-memory game state. Sets winning set if won. */
+    async function _refreshGameState(game: GameInterface): Promise<undefined> {
       if (game.gameState === 2) {
         if (game.currPlayerId !== playerId) {
           throw new Error("Game is won, but not by current player. Something went wrong.");
         }
         // console.log("updating game gameState in DB since winner was found");
-        await Game.update(game.id, { winningSet: game.winningSet, gameState: 2 })
+        await Game.update(game.id, { winningSet: game.winningSet, gameState: 2 });
       }
 
       // check for tie
       if (game.gameState === 3) {
         // console.log("updating game gameState in DB since tie was found");
-        await Game.update(game.id, { gameState: 3 })
+        await Game.update(game.id, { gameState: 3 });
         return;
       }
     }
@@ -705,11 +694,11 @@ class Game {
    * Accepts a game state (CheckEndGameInterface)
    * Returns an end game state (gameInterface)
    */
-  static checkForGameEnd(game : GameInterface) : GameInterface {
+  static checkForGameEnd(game: GameInterface): GameInterface {
 
     // console.log("checkForGameEnd() called with game:", game);
 
-    if (game.placedPieces === null) { throw new Error("placedPiece is null.") };
+    if (game.placedPieces === null) { throw new Error("placedPiece is null."); };
 
     // check each player game piece to see if one of it's valid coord sets contains
     // all the same player IDs
