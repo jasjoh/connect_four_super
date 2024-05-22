@@ -1,15 +1,17 @@
 import "./Main.css";
-import NavBar from "./NavBar";
 
-/** Parent level component for displaying nav bar and all other components
+/** Handles rendering of game and player lists
  *
  * Props:
- *  - component: the subcomponent (GameList / PlayerList) to render
+ * - component: the sub-component (GameList / PlayerListAndCreate) to render
  *
  * State:
- *  - None
+ * - None
  *
- * RoutesList -> Main -> { NavBard, GameList, PlayerList } */
+ * RoutesList -> Main
+ * Main -> GameList
+ * Main -> PlayerListAndCreate
+ * */
 function Main({ subComponent: SubComponent }) {
   // console.log("Main re-rendered");
 

@@ -6,7 +6,7 @@ import PlayerListAndCreate from "./PlayerListAndCreate.js";
 import GameDetails from "./GameDetails.js";
 import PlayerDetails from "./PlayerDetails.js";
 
-/** Handles re-routing of all URLs to main
+/** Handles all routing of URLs to components (except NavBar)
  *
  * Props:
  *  - none
@@ -14,7 +14,13 @@ import PlayerDetails from "./PlayerDetails.js";
  * State:
  *  - none
  *
- * App -> RoutesList -> { Main  }  */
+ * App -> BrowserRouter -> RoutesList
+ * RoutesList -> PlayGame
+ * RoutesList -> GameDetails
+ * RoutesList -> Main
+ * RoutesList -> PlayerDetails
+ *
+ * */
 function RoutesList() {
   return (
     <Routes>
