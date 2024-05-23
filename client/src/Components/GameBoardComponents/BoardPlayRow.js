@@ -10,7 +10,9 @@ import BoardPlayCell from "./BoardPlayCell";
  * State:
  *  - None
  *
- * GameBoard -> BoardPlayRow -> BoardPlayCell */
+ * GameBoard -> BoardPlayRow
+ * BoardPlayRow -> BoardPlayCell
+ * */
 function BoardPlayRow({ rowState, gamePlayers }) {
   // console.log("BoardPlayRow re-rendered");
   // console.log("rowState passed in is:", rowState);

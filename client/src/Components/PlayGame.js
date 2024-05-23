@@ -23,9 +23,12 @@ import GameDetailsPropertyList from "./GameDetailsPropertyList.js";
  *
  * GameDetails -> (gameId) -> PlayGame
  * /games/{gameId} -> PlayGame
+ *
  * PlayGame -> GameDetailsPropertyList
  * PlayGame -> PlayerList
  * PlayGame -> GameBoard
+ *
+ * PlayGame -> LoadingSpinner
  */
 function PlayGame() {
   // console.log("PlayGame re-rendered");
@@ -43,8 +46,8 @@ function PlayGame() {
   * After construction, initializes the new GameManager and then sets state
   * Once the new GameManager state is set, sets isLoading to false
   */
-  useEffect(function initializeGameManagerEffect(){
-    async function initializeGameManager(){
+  useEffect(function initializeGameManagerEffect() {
+    async function initializeGameManager() {
       const newGameManager = new GameManager(gameId, forceReRender);
       await newGameManager.initialize();
       setGameManager(newGameManager);
@@ -57,7 +60,7 @@ function PlayGame() {
   /** Used by the gameManager as a callback function to force re-render when game state is updated  */
   function forceReRender() {
     // console.log("PlayGame.forceReRender() called");
-    setRenderToggle( prevValue => { return !prevValue; } );
+    setRenderToggle(prevValue => { return !prevValue; });
   }
 
   /** Called when a user clicks on the start or re-start button
@@ -89,7 +92,7 @@ function PlayGame() {
     await gameManager.dropPiece(colIndex);
   }
 
-  if (isLoading) return ( <LoadingSpinner /> );
+  if (isLoading) return (<LoadingSpinner />);
 
   return (
     <div className="PlayGame">

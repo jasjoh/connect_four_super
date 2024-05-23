@@ -8,7 +8,8 @@ import "./GamePiece.css"
  * State:
  *  - None
  *
- * BoardPlayCell -> GamePiece*/
+ * BoardPlayCell -> GamePiece
+ * */
 function GamePiece({ color='#ff0000' }) {
   // console.log("GamePiece re-rendered");
 

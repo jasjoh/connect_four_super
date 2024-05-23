@@ -9,7 +9,8 @@
  * State:
  *  - None
  *
- * BoardDropRow -> BoardDropCell*/
+ * BoardDropRow -> BoardDropCell
+ * */
 function BoardDropCell({ colIndex, dropPiece }) {
   // console.log("BoardDropCell re-rendered");
 

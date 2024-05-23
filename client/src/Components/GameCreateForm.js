@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./GameCreateForm.css"
 
-/** A form for creating a new player
+/** A form for creating a new game
  *
  * Props:
  *  - createGame(): A callback function for form submission
@@ -9,7 +9,8 @@ import "./GameCreateForm.css"
  * State:
  *  - None
  *
- * PlayerList -> GameCreateForm */
+ * GameList -> GameCreateForm
+ * */
 
 function GameCreateForm({ createGame }) {
   // console.log("GameCreateForm re-rendered");
@@ -41,6 +42,7 @@ function GameCreateForm({ createGame }) {
     }
   }
 
+  // calls the createGame() callback on form submission
   function handleSubmit(evt) {
     // console.log("handleSubmit called");
     evt.preventDefault();

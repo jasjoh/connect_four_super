@@ -32,8 +32,8 @@ export class GameManager {
   async initialize() {
     // console.log("GameManager.initialize() called.")
     await this._updateLocalGame();
-    this.board = this.initializeClientBoard();
-    this.gameEnding();
+    this.board = this._initializeClientBoard();
+    this._gameEnding();
     this.clientTurns = this.game.gameTurns;
     this.clientTurnIdsSet = new Set(this.clientTurns.map(turn => turn.turnId));
     // console.log("initial client turn ids:", this.clientTurnIdsSet);
@@ -65,13 +65,13 @@ export class GameManager {
       this.clientTurns.push(turn);
       this.clientTurnIdsSet.add(turn.turnId);
       // console.log("clientTurnsSet updated with new turn:", this.clientTurnsSet);
-      this.updateBoardWithTurn(turn);
+      this._updateBoardWithTurn(turn);
       // console.log("board updated with new turn:", this.board);
       this.forceReRender(); // call callback to re-render
       await delay(renderTurnsDelayInMs);
     }
     if (newTurns.length > 0) {
-      this.gameEnding();
+      this._gameEnding();
     }
     // console.log("_conductPoll() finished; client turns:", this.clientTurns);
     // console.log("clientTurnIdSet:", this.clientTurnIdsSet);

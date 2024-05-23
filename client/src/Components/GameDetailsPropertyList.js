@@ -10,7 +10,8 @@ import { gameStates } from "../utils.js";
  * State:
  *  - None
  *
- * GameDetails -> GameDetailsPropertyList */
+ * GameDetails -> GameDetailsPropertyList
+ * */
 
   function GameDetailsPropertyList({gameData}) {
     // console.log("GameDetailsPropertyList re-rendered");

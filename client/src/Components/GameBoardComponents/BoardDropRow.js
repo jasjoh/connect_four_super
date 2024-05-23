@@ -10,7 +10,10 @@ import BoardDropCell from "./BoardDropCell";
  * State:
  *  - None
  *
- * GameBoard -> BoardDropRow -> BoardDropCell */
+ * GameBoard -> BoardDropRow
+ *
+ * BoardDropRow -> BoardDropCell
+ * */
 function BoardDropRow({ width, dropPiece }) {
   // console.log("BoardDropRow re-rendered, passed width of:", width);
 

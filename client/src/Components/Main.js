@@ -15,7 +15,7 @@ import "./Main.css";
 function Main({ subComponent: SubComponent }) {
   // console.log("Main re-rendered");
 
-   return (
+  return (
     <div className="Main">
       <SubComponent />
     </div>

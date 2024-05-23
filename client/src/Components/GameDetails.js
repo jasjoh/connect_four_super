@@ -1,28 +1,38 @@
 import ConnectFourServerApi from "../server";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { gameStates } from "../utils.js";
 
 import "./GameDetails.css";
 
-import NavBar from "./NavBar.js";
 import PlayerList from "./PlayerList.js";
 import AddPlayerToGameModal from "./AddPlayerToGameModal.js";
 import LoadingSpinner from "./LoadingSpinner.js";
 import GameDetailsPropertyList from "./GameDetailsPropertyList.js";
 
-// import "./GameDetails.css";
-
 /** Displays the details of a game
  *
  * Props:
- *  - gameId: The ID of a game
+ * - None
+ *
+ * URL Params:
+ * - gameId: The ID of the game to display the details of
  *
  * State:
- *  - game: The game object
- *  - isLoading: Used for keeping track of whether game data is loaded or not
+ * - game: The game object
+ * - gamePlayers: The players currently part of the game
+ * - isModalOpen: Used for managing the 'add players to game' modal
+ * - isLoading: Used for keeping track of whether game data is loaded or not
  *
- * PlayerList -> GameDetails */
+ * GameList -> (navigation) -> GameDetails
+ * PlayGame -> (navigation) -> GameDetails
+ * /games/:gameId -> GameDetails
+ *
+ * GameDetails -> (modal) -> AddPlayerToGameModal
+ * GameDetails -> GameDetailsPropertyList
+ * GameDetails -> PlayerList
+ *
+ * GameDetails -> LoadingSpinner
+ * */
   function GameDetails() {
     console.log("GameDetails re-rendered");
 
@@ -34,6 +44,8 @@ import GameDetailsPropertyList from "./GameDetailsPropertyList.js";
     const { gameId } = useParams();
     const navigate = useNavigate();
 
+    /** Fetches the game and its current players from the server on mount
+     * and whenever gameId changes then sets appropriate state */
     useEffect(function fetchGameAndPlayersEffect(){
       async function fetchGameAndPlayers(){
         const game = await ConnectFourServerApi.getGame(gameId);
@@ -48,6 +60,10 @@ import GameDetailsPropertyList from "./GameDetailsPropertyList.js";
       fetchGameAndPlayers();
     }, [gameId])
 
+    /** Called when a user clicks on a REMOVE button to remove a player from a game
+     * Calls ConnectFourServerApi.removePlayerFromGame(), fetches an updated player list
+     * and then updates component state to cause a re-render.
+     */
     async function removePlayer(playerId) {
       // console.log("removePlayer() called for player ID:", playerId);
       await ConnectFourServerApi.removePlayerFromGame(gameId, playerId);
@@ -55,6 +71,10 @@ import GameDetailsPropertyList from "./GameDetailsPropertyList.js";
       setGamePlayers(updatedGamePlayers);
     }
 
+    /** Called when a user adds a player to a game from the 'add player to game' modal
+     * Calls ConnectFourServerApi.addPlayersToGame(), fetches an updated player list
+     * and then updates component state to cause a re-render.
+     */
     async function addPlayerToGame(playerId) {
       // console.log("addPlayerToGame() called for player ID:", playerId);
       await ConnectFourServerApi.addPlayersToGame(gameId, [playerId]);
@@ -62,11 +82,13 @@ import GameDetailsPropertyList from "./GameDetailsPropertyList.js";
       setGamePlayers(updatedGamePlayers);
     }
 
+    /** Navigates to play a game */
     async function playGame() {
       // console.log("playGame() called");
       navigate(`/games/${gameId}/play`);
     }
 
+    /** Deletes a game and then navigates back to root / home */
     async function deleteGame() {
       // console.log("deleteGame() called");
       await ConnectFourServerApi.deleteGame(gameId);

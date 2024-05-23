@@ -6,22 +6,29 @@ import GameListing from "./GameListing";
 import GameCreateForm from "./GameCreateForm";
 import LoadingSpinner from "./LoadingSpinner";
 
-/** Displays the list of available games
+/** Displays the list of available games and a form to create a new game
  *
  * Props:
  *  - None
  *
  * State:
- *  - games: The games retrieved from the server
- *  - isLoading: A flag to keep track of whether games have been loaded
+ *  - gameList: The list games retrieved from the server
+ *  - isLoading: A flag to keep track of whether game data has been loaded
  *
- * Main -> GameList */
+ * RoutesList -> Main -> GameList
+ *
+ * GameList -> GameCreateForm
+ *
+ * GameList -> LoadingSpinner
+ *  */
 function GameList() {
   // console.log("GameList re-rendered");
 
   const [gameList, setGameList] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  /** Fetches the game list from the server on mount
+   * Updates state with the list and sets isLoading to false to trigger re-render */
   useEffect(function fetchGameListOnMount(){
     async function fetchGameListings(){
       // console.log("fetchGameListOnMount() called thus component is being re-mounted");
@@ -33,6 +40,10 @@ function GameList() {
     fetchGameListings();
   }, [])
 
+  /** Called when a user fills in the form to create a game and clicks create
+   * Leverages ConnectFourServerApi to create the game, fetch the updated
+   * list of games and then updates state to trigger a re-render.
+   */
   async function createGame(formData) {
     // console.log("GameList createGame() form called with:", formData);
     await ConnectFourServerApi.createGame(formData);

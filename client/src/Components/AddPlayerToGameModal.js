@@ -9,21 +9,31 @@ import LoadingSpinner from "./LoadingSpinner.js";
  *
  * Props:
  *  - isOpen: a flag indicating whether to render content in this modal
- *  - gameId: the gameId to add players to (in order to filter avail players)
  *  - closeModal: a callback function which closes (hides) the modal
+ *  - gameId: the gameId to add players to (in order to filter avail players)
+ *  - gamePlayers: the list of players that are currently part of the game
+ *  - addPlayerToGame(): a callback function which will add a player to the game
  *
  * State:
- *  - playerList: The list of players available to add to a game
+ *  - availPlayersList: The list of players available to add to a game
  *  - isLoading: A flag to keep track of whether players have been loaded
  *
- * GameDetails -> AddPlayerToGameModal -> PlayerList */
-function AddPlayerToGameModal({isOpen, gamePlayers, closeModal, gameId, addPlayerToGame}) {
+ * GameDetails -> AddPlayerToGameModal
+ * AddPlayerToGameModal -> PlayerList
+ *
+ * AddPlayerToGameModal -> LoadingSpinner
+ * */
+function AddPlayerToGameModal({isOpen, closeModal, gameId, gamePlayers, addPlayerToGame}) {
   // console.log("AddPlayerToGameModal re-rendered");
   // console.log("received gamePlayers:", gamePlayers);
 
-  const [availPlayersList, setAvailPlayerList] = useState(null);
+  const [availPlayersList, setAvailPlayersList] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  /** Performs a diff of game players to all players to determine avail players
+   * Fetches updated player list on mount and changing of: gameId, modal state and gamePlayers
+   * Updates isLoading once finished to force a re-render
+   */
   useEffect(function fetchAndFilterPlayerListOnMount(){
     if (isOpen) {
       async function fetchAndFilterPlayerListings(){
@@ -42,7 +52,7 @@ function AddPlayerToGameModal({isOpen, gamePlayers, closeModal, gameId, addPlaye
           return matchedPlayers === undefined;
         })
         // console.log("available players determined to be:", availPlayers);
-        setAvailPlayerList(availPlayers);
+        setAvailPlayersList(availPlayers);
         setIsLoading(false);
       }
 
@@ -50,14 +60,7 @@ function AddPlayerToGameModal({isOpen, gamePlayers, closeModal, gameId, addPlaye
     }
   }, [gameId, isOpen, gamePlayers])
 
-  // async function addPlayerToGame(playerId) {
-  //   console.log("addPlayerToGame() called within AddPlayerToGameModal");
-  //   await ConnectFourServerApi.addPlayersToGame([playerId]);
-  //   setIsLoading(true);
-  //   fetchAndFilterPlayerListings();
-  // }
-
-
+  // used for modal rendering
   if (!isOpen) return null
   if (isLoading) return ( <LoadingSpinner /> );
 

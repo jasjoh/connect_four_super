@@ -3,11 +3,12 @@ import "./PlayerList.css";
 import PlayerListing from "./PlayerListing.js";
 
 
-/** Displays the list of existing players
+/** Displays a list of players with a dynamic action based on the context of
+ * where the player list is being displayed.
  *
  * Props:
- *  - action: callback function representing the action available for each player
- *  - actionType: the type of action ('deletePlayer', 'addPlayer', 'removePlayer')
+ *  - action: callback function to call when a user performs the dynamic action
+ *  - actionType: the type of dynamic action ('deletePlayer', 'addPlayer', 'removePlayer')
  *  - playerList: an array [] of players to display in a list
  *  -- player object like:  *
  *    id: string;
@@ -19,7 +20,10 @@ import PlayerListing from "./PlayerListing.js";
  * State:
  *  - none
  *
- * PlayerListAndCreate -> PlayerList -> PlayerListing */
+ * PlayerListAndCreate -> PlayerList
+ *
+ * PlayerList -> PlayerListing
+ * */
 function PlayerList({playerList, action, actionType}) {
   // console.log("PlayerList re-rendered");
 

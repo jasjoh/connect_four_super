@@ -5,12 +5,15 @@ import GamePiece from "./GamePiece";
  *
  * Props:
  *  - highlight: whether to highlight the cell as part of a winning set
- *  - placed: whether a game piece has been placed in this cell
+ *  - color: the color of the cell (if it has a piece there)
  *
  * State:
  *  - None
  *
- * BoardPlayRow -> BoardPlayCell -> GamePiece*/
+ * BoardPlayRow -> BoardPlayCell
+ *
+ * BoardPlayCell -> GamePiece
+ * */
 function BoardPlayCell({ highlight=false, color=undefined}) {
   // console.log("BoardPlayCell re-rendered");
 

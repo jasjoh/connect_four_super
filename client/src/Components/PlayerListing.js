@@ -1,11 +1,10 @@
-// import { useNavigate } from 'react-router-dom';
 import "./PlayerListing.css";
 
 /** Displays a specific player listing
  *
  * Props:
- *  - action: callback function representing the action available for each player
- *  - actionType: the type of action ('deletePlayer', 'addPlayer', 'removePlayer')
+ *  - action: callback function to call when a user performs the dynamic action
+ *  - actionType: the type of dynamic action ('deletePlayer', 'addPlayer', 'removePlayer')
  *  - player: A player object like: *
  *    id: string;
       name: string;
@@ -16,11 +15,10 @@ import "./PlayerListing.css";
  * State:
  *  - None
  *
- * PlayerList -> PlayerListing */
+ * PlayerList -> PlayerListing
+ * */
   function PlayerListing({ player, action, actionType }) {
     // console.log("PlayerListing re-rendered");
-
-    // const navigate = useNavigate();
 
     let buttonText = '';
 
@@ -38,12 +36,14 @@ import "./PlayerListing.css";
         break;
     }
 
+    /** calls the callback function when a user clicks on the button representing
+     * the dynamic action associated with this listing
+    */
     function buttonClick(evt) {
       // console.log(`action button clicked; calling provided action callback`);
       action(player.id);
     }
 
-    // onClick={playerClick}
     return (
       <tr className="PlayerListing-tr">
         <td className="PlayerListing-td">{`${player.id}`}</td>

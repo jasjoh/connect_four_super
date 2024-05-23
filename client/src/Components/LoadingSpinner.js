@@ -11,7 +11,14 @@ import { delay } from "../utils";
  * State:
  *  - None
  *
- * BoardPlayCell -> LoadingSpinner*/
+ * The following components all call the LoadingSpinner
+ * - GameList
+ * - GameDetails
+ * - PlayerListAndCreate
+ * - PlayGame
+ * - AddPlayerToGameModal
+ *
+ * */
 function LoadingSpinner() {
   // console.log("LoadingSpinner re-rendered");
 
@@ -31,7 +38,7 @@ function LoadingSpinner() {
       <div className="LoadingSpinner-spinner"></div>
       { !extendedLoading ?        (
           <div className="LoadingSpinner-text">Loading ...</div> ) :
-        ( <div className="LoadingSpinner-text">Extended loading detected - server warming up - please wait 60s and reload page if necessary ...</div> )
+        ( <div className="LoadingSpinner-text">Extended loading detected - server warming up - please wait 120s and reload page if necessary ...</div> )
       }
     </div>
   );
