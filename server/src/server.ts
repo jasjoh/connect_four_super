@@ -1,5 +1,3 @@
-"use strict";
-
 import app from "./app"
 
 app.listen(3001, function () {

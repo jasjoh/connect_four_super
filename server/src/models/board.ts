@@ -19,7 +19,7 @@ export type BoardDataType = BoardCellFinalStateInterface[][];
 // an initialized board full of finalized board cells
 export type BoardInterface = {
   id : string;
-  data : BoardCellFinalStateInterface[][];
+  data : BoardDataType;
   width : number;
   height : number;
   availCols : null | number[];
