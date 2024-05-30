@@ -29,7 +29,7 @@ function PlayerList({playerList, action, actionType}) {
 
   let titleText = '';
   switch (actionType) {
-    case 'removePlayer', undefined:
+    case 'removePlayer':
       titleText = 'Game Players'
       break;
     case 'deletePlayer':
@@ -37,6 +37,9 @@ function PlayerList({playerList, action, actionType}) {
       break;
     case 'addPlayer':
       titleText = 'Available Players'
+      break;
+    default:
+      titleText = 'Game Players'
       break;
   }
 

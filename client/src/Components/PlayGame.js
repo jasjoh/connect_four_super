@@ -40,6 +40,7 @@ function PlayGame() {
 
   /** Hack to handle the fact game state is mutating server-side and avoid
    * having to generate new GameManagers each time game state is updated */
+  // eslint-disable-next-line
   const [renderToggle, setRenderToggle] = useState(false);
 
   /** Constructs a new GameManager on mount or on changing of gameId
@@ -53,7 +54,7 @@ function PlayGame() {
       setGameManager(newGameManager);
       setIsLoading(false);
     }
-    console.log("initializeGameManagerFetch() called; component re-mounted or gameId changed");
+    // console.log("initializeGameManagerFetch() called; component re-mounted or gameId changed");
     initializeGameManager();
   }, [gameId]);
 

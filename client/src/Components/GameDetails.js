@@ -34,7 +34,7 @@ import GameDetailsPropertyList from "./GameDetailsPropertyList.js";
  * GameDetails -> LoadingSpinner
  * */
   function GameDetails() {
-    console.log("GameDetails re-rendered");
+    // console.log("GameDetails re-rendered");
 
     const [game, setGame] = useState(null);
     const [gamePlayers, setGamePlayers] = useState(null);

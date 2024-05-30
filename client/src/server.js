@@ -1,7 +1,9 @@
 import axios from "axios";
-// const axios = require('axios');
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+let BASE_URL;
+process.env.NODE_ENV === 'production' ?
+  BASE_URL = process.env.REACT_APP_BASE_URL :
+  BASE_URL = "http://localhost:3001";
 
 class ConnectFourServerApi {
 

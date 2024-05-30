@@ -26,7 +26,7 @@ function LoadingSpinner() {
 
   useEffect(function startExtendedLoadingTimerOnMount(){
     async function startExtendedLoadingTimer(){
-      console.log("startExtendedLoadingTimerOnMount() called thus component is being re-mounted");
+      // console.log("startExtendedLoadingTimerOnMount() called thus component is being re-mounted");
       await delay(5000);
       setExtendedLoading(true);
     }
