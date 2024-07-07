@@ -1,4 +1,7 @@
 ## Connect Four Super
+
+NOTE: See improved version of this app @ https://github.com/jasjoh/connect_four_tanstack
+
 #### A highly evolved re-write of a vanilla JS bootcamp connect four game exercise.
 ##### Key Features
 - Local Multiplayer Connect Four Games
